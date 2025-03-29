@@ -1,14 +1,11 @@
-import { FC } from 'react';
+import HeadExpenseItem from '@/components/HeadExpenseItem';
+import TransactionItem from '@/components/TransactionItem';
 import { BsArrowRight } from 'react-icons/bs';
 import { IoWalletOutline } from 'react-icons/io5';
 import { LuWalletCards } from 'react-icons/lu';
 import { PiHandCoins } from 'react-icons/pi';
-import HeadExpenseItem from '../HeadExpenseItem';
-import TransactionItem from '../TransactionItem';
 
-interface Props {}
-
-const Home: FC<Props> = () => {
+const Home = () => {
 	return (
 		<div className="flex flex-col gap-4">
 			<div className="flex gap-4 w-full">
@@ -33,7 +30,7 @@ const Home: FC<Props> = () => {
 			</div>
 			<div className="p-4 bg-white rounded-md flex flex-col gap-4 shadow-md shadow-gray-100">
 				<div className="flex justify-between items-center">
-					<h1 className="text-md font-semibold">Recent Transactions</h1>
+					<h1 className="text-md  poppins-semibold">Recent Transactions</h1>
 					<div className="text-xs px-4 py-2 bg-gray-100 rounded hover:bg-gray-200 duration-200 cursor-pointer active:bg-gray-300 flex gap-2">
 						<span>See All</span> <BsArrowRight size={15} />
 					</div>

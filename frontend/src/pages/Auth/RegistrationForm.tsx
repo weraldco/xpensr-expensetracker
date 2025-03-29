@@ -11,8 +11,9 @@ import { useForm } from 'react-hook-form';
 import { FaRegEye } from 'react-icons/fa6';
 import { z } from 'zod';
 
+import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Button } from '../ui/button';
+import { Link } from 'react-router';
 
 const formSchema = z.object({
 	email: z.string().email({ message: 'Invalid email address' }),
@@ -33,16 +34,7 @@ const RegistrationForm = () => {
 		console.log(values);
 	};
 	return (
-		<div className="flex flex-col items-center justify-center h-screen w-screen gap-10">
-			<div className="text-center flex flex-col gap-2">
-				<h1 className="cherry-bomb-one-regular text-7xl text-violet-500">
-					xpensee
-				</h1>
-				<span className="text-gray-400 text-base">
-					Track your Expense and Income
-				</span>
-			</div>
-
+		<div className="flex flex-col items-center  h-screen w-full gap-10">
 			<div className="flex flex-col gap-4 inter-regular py-4">
 				<div className="flex flex-col">
 					<div className="inter-medium text-xl">Registration</div>
@@ -130,7 +122,9 @@ const RegistrationForm = () => {
 				</Form>
 				<div className="text-gray-400 text-sm">
 					Already registered?{' '}
-					<span className="hover:underline text-violet-400">Sign-in here</span>
+					<Link to="/login" className="hover:underline text-violet-400">
+						Sign-in here
+					</Link>
 				</div>
 			</div>
 		</div>
