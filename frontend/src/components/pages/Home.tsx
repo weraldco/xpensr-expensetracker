@@ -10,7 +10,7 @@ interface Props {}
 
 const Home: FC<Props> = () => {
 	return (
-		<div>
+		<div className="flex flex-col gap-4">
 			<div className="flex gap-4 w-full">
 				<HeadExpenseItem
 					icon={<IoWalletOutline size={20} />}
@@ -31,14 +31,14 @@ const Home: FC<Props> = () => {
 					className="bg-red-400"
 				/>
 			</div>
-			<div className="p-4 bg-white rounded-md flex flex-col gap-4">
+			<div className="p-4 bg-white rounded-md flex flex-col gap-4 shadow-md shadow-gray-100">
 				<div className="flex justify-between items-center">
-					<h1 className="text-xl font-semibold">Recent Transactions</h1>
+					<h1 className="text-md font-semibold">Recent Transactions</h1>
 					<div className="text-xs px-4 py-2 bg-gray-100 rounded hover:bg-gray-200 duration-200 cursor-pointer active:bg-gray-300 flex gap-2">
 						<span>See All</span> <BsArrowRight size={15} />
 					</div>
 				</div>
-				<div className="flex flex-col">
+				<div className="flex flex-col ">
 					<TransactionItem type="expense" />
 					<TransactionItem type="income" />
 					<TransactionItem type="expense" />

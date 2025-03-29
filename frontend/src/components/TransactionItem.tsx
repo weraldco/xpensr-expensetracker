@@ -9,7 +9,7 @@ interface Props {
 const TransactionItem: FC<Props> = ({ type }) => {
 	return (
 		<div className="group flex items-center justify-between text-[0.85em] hover:bg-gray-50 p-2 duration-200">
-			<div className="flex gap-4">
+			<div className="flex gap-4 items-center">
 				<div className="p-4 bg-gray-100 rounded-full">
 					<MdOutlineShoppingCart size={22}></MdOutlineShoppingCart>
 				</div>

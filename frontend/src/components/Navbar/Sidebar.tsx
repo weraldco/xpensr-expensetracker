@@ -42,7 +42,6 @@ const Sidebar = () => {
 					redirectLink="logout"
 				/>
 			</div>
-			Test
 		</div>
 	);
 };
