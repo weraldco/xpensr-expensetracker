@@ -2,15 +2,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useEffect, useRef, useState } from 'react';
 import { LuTrash, LuUpload, LuUser } from 'react-icons/lu';
-
-interface ImageT {
-	name: string;
-	size: number;
-	type: string;
-	webkitRelativePath?: string;
-	lastModifiedDate: Date;
-	lastModified: number;
-}
+import { ImageT } from './RegistrationForm';
 
 const ProfilePhotoSelector = ({
 	imageData,

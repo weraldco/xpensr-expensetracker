@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import {
 	Form,
 	FormControl,
@@ -17,30 +18,48 @@ import { useState } from 'react';
 import { Link } from 'react-router';
 import ProfilePhotoSelector from './ProfilePhotoSelector';
 
-interface ImageT {
+export interface ImageT {
 	name: string;
 	size: number;
 	type: string;
-	webkitRelativePath?: string;
+	webkitRelativePath: string;
 	lastModifiedDate: Date;
 	lastModified: number;
 }
 
+const imageSchema = z.object({
+	name: z.string(),
+	size: z.number(),
+	type: z.string(),
+	webkitRelativePath: z.string(),
+	lastModifiedDate: z.date(),
+	lastModified: z.number(),
+});
 const formSchema = z.object({
 	fullName: z.string().min(10),
 	email: z.string().email({ message: 'Invalid email address' }),
 	password: z.string().min(4),
 	repeatPassword: z.string().min(4),
-	profileImageUrl: z.string(),
+	profileImageUrl: imageSchema.optional(),
 });
 const RegistrationForm = () => {
-	const [image, setImage] = useState<ImageT | null>(null);
+	// const [image, setImage] = useState<ImageT | null>(null);
 
 	const handleImageChange = (data: ImageT | null) => {
-		setImage(data);
-		form.setValue('profileImageUrl', 'Test');
+		// setImage(data);
+		if (data !== null) {
+			form.setValue('profileImageUrl', {
+				name: data.name,
+				size: data.size,
+				type: data.type,
+				webkitRelativePath: data.webkitRelativePath,
+				lastModifiedDate: data.lastModifiedDate,
+				lastModified: data.lastModified,
+			});
+		} else {
+			form.setValue('profileImageUrl', undefined);
+		}
 	};
-	console.log(image);
 	const form = useForm<z.infer<typeof formSchema>>({
 		resolver: zodResolver(formSchema),
 		defaultValues: {
@@ -48,7 +67,7 @@ const RegistrationForm = () => {
 			email: '',
 			password: '',
 			repeatPassword: '',
-			profileImageUrl: '',
+			profileImageUrl: undefined,
 		},
 	});
 
