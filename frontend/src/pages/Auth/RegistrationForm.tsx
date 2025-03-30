@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import {
 	Form,
 	FormControl,
@@ -14,7 +13,6 @@ import { z } from 'zod';
 
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { useState } from 'react';
 import { Link } from 'react-router';
 import ProfilePhotoSelector from './ProfilePhotoSelector';
 
@@ -43,10 +41,7 @@ const formSchema = z.object({
 	profileImageUrl: imageSchema.optional(),
 });
 const RegistrationForm = () => {
-	// const [image, setImage] = useState<ImageT | null>(null);
-
 	const handleImageChange = (data: ImageT | null) => {
-		// setImage(data);
 		if (data !== null) {
 			form.setValue('profileImageUrl', {
 				name: data.name,
