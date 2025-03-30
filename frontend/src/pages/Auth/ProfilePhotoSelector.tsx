@@ -1,11 +1,25 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useEffect, useRef, useState } from 'react';
 import { LuTrash, LuUpload, LuUser } from 'react-icons/lu';
 
-const ProfilePhotoSelector = ({ imageData }: { imageData: string }) => {
+interface ImageT {
+	name: string;
+	size: number;
+	type: string;
+	webkitRelativePath?: string;
+	lastModifiedDate: Date;
+	lastModified: number;
+}
+
+const ProfilePhotoSelector = ({
+	imageData,
+}: {
+	imageData: (data: ImageT | null) => void;
+}) => {
 	const inputRef = useRef<HTMLInputElement | null>(null);
 	const [previewUrl, setPreviewUrl] = useState<string>('');
-	const [image, setImage] = useState<string | null>(null);
+	const [image, setImage] = useState<ImageT | null>(null);
 
 	const handleImageChange = (event: any) => {
 		const file = event.target.files[0];
@@ -27,7 +41,13 @@ const ProfilePhotoSelector = ({ imageData }: { imageData: string }) => {
 			inputRef.current.click();
 		}
 	};
-	useEffect(() => {}, [image]);
+
+	const sendDataToParent = () => {
+		imageData(image);
+	};
+	useEffect(() => {
+		sendDataToParent();
+	}, [image]);
 	return (
 		<div className="flex justify-center mb-6">
 			<input

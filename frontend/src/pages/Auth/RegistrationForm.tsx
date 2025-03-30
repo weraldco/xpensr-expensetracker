@@ -17,18 +17,30 @@ import { useState } from 'react';
 import { Link } from 'react-router';
 import ProfilePhotoSelector from './ProfilePhotoSelector';
 
+interface ImageT {
+	name: string;
+	size: number;
+	type: string;
+	webkitRelativePath?: string;
+	lastModifiedDate: Date;
+	lastModified: number;
+}
+
 const formSchema = z.object({
 	fullName: z.string().min(10),
 	email: z.string().email({ message: 'Invalid email address' }),
 	password: z.string().min(4),
 	repeatPassword: z.string().min(4),
+	profileImageUrl: z.string(),
 });
 const RegistrationForm = () => {
-	const [image, setImage] = useState<string>('');
+	const [image, setImage] = useState<ImageT | null>(null);
 
-	const handleImageChange = (data) => {
+	const handleImageChange = (data: ImageT | null) => {
 		setImage(data);
+		form.setValue('profileImageUrl', 'Test');
 	};
+	console.log(image);
 	const form = useForm<z.infer<typeof formSchema>>({
 		resolver: zodResolver(formSchema),
 		defaultValues: {
@@ -36,6 +48,7 @@ const RegistrationForm = () => {
 			email: '',
 			password: '',
 			repeatPassword: '',
+			profileImageUrl: '',
 		},
 	});
 
@@ -56,7 +69,7 @@ const RegistrationForm = () => {
 						onSubmit={form.handleSubmit(onSubmit)}
 						className="space-y-6 w-[400px]"
 					>
-						<ProfilePhotoSelector />
+						<ProfilePhotoSelector imageData={handleImageChange} />
 						<FormField
 							control={form.control}
 							name="fullName"
