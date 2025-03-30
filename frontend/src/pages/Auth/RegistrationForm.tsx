@@ -13,17 +13,26 @@ import { z } from 'zod';
 
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { useState } from 'react';
 import { Link } from 'react-router';
+import ProfilePhotoSelector from './ProfilePhotoSelector';
 
 const formSchema = z.object({
+	fullName: z.string().min(10),
 	email: z.string().email({ message: 'Invalid email address' }),
 	password: z.string().min(4),
 	repeatPassword: z.string().min(4),
 });
 const RegistrationForm = () => {
+	const [image, setImage] = useState<string>('');
+
+	const handleImageChange = (data) => {
+		setImage(data);
+	};
 	const form = useForm<z.infer<typeof formSchema>>({
 		resolver: zodResolver(formSchema),
 		defaultValues: {
+			fullName: '',
 			email: '',
 			password: '',
 			repeatPassword: '',
@@ -37,9 +46,9 @@ const RegistrationForm = () => {
 		<div className="flex flex-col items-center  h-screen w-full gap-10">
 			<div className="flex flex-col gap-4 inter-regular py-4">
 				<div className="flex flex-col">
-					<div className="inter-medium text-xl">Registration</div>
-					<div className="text-xs text-gray-400">
-						Please complete all the details below.
+					<div className="inter-medium text-xl">Create an Account</div>
+					<div className="text-xs text-gray-500">
+						Join us today by entering your details below.
 					</div>
 				</div>
 				<Form {...form}>
@@ -47,6 +56,25 @@ const RegistrationForm = () => {
 						onSubmit={form.handleSubmit(onSubmit)}
 						className="space-y-6 w-[400px]"
 					>
+						<ProfilePhotoSelector />
+						<FormField
+							control={form.control}
+							name="fullName"
+							render={({ field }) => (
+								<FormItem>
+									<FormLabel className="text-gray-700">Fullname</FormLabel>
+									<FormControl>
+										<Input
+											placeholder="Enter your Fullname.."
+											className="py-5"
+											{...field}
+										/>
+									</FormControl>
+
+									<FormMessage />
+								</FormItem>
+							)}
+						/>
 						<FormField
 							control={form.control}
 							name="email"
