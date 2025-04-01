@@ -24,10 +24,26 @@ exports.addIncome = async (req, res) => {
 };
 
 // Get All Income
-exports.getAllIncome = async (req, res) => {};
+exports.getAllIncome = async (req, res) => {
+	const userId = req.user.id;
+
+	try {
+		const income = await Income.find({ userId }).sort({ date: -1 });
+		res.json({ income });
+	} catch (error) {
+		res.status(500).json({ message: 'Something went wrong in the server.' });
+	}
+};
 
 // Download Income to Excel Format
 exports.downloadIncomeExcel = async (req, res) => {};
 
 // Delete Income
-exports.deleteIncome = async (req, res) => {};
+exports.deleteIncome = async (req, res) => {
+	try {
+		await Income.findByIdAndDelete(req.params.id);
+		res.json({ message: 'Income deleted successfully.' });
+	} catch (error) {
+		res.status(500).json({ message: 'Something went wrong in the server.' });
+	}
+};
