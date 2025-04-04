@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import {
 	Form,
 	FormControl,
@@ -13,7 +15,11 @@ import { z } from 'zod';
 
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Link } from 'react-router';
+import { UserContext } from '@/context/userContext';
+import { API_PATHS } from '@/utils/apiPaths';
+import axiosInstance from '@/utils/axiosInstance';
+import { useContext, useState } from 'react';
+import { Link, useNavigate } from 'react-router';
 import ProfilePhotoSelector from './ProfilePhotoSelector';
 
 export interface ImageT {
@@ -41,6 +47,10 @@ const formSchema = z.object({
 	profileImageUrl: imageSchema.optional(),
 });
 const RegistrationForm = () => {
+	const [error, setError] = useState<string>('');
+
+	const { updateUser } = useContext(UserContext);
+	const navigate = useNavigate();
 	const handleImageChange = (data: ImageT | null) => {
 		if (data !== null) {
 			form.setValue('profileImageUrl', {
@@ -66,8 +76,33 @@ const RegistrationForm = () => {
 		},
 	});
 
-	const onSubmit = (values: z.infer<typeof formSchema>) => {
-		console.log(values);
+	const onSubmit = async (values: z.infer<typeof formSchema>) => {
+		setError('');
+		try {
+			const { fullName, email, password, repeatPassword, profileImageUrl } =
+				values;
+
+			const response = await axiosInstance.post(API_PATHS.AUTH.REGISTER, {
+				fullName,
+				email,
+				password,
+				profileImageUrl,
+			});
+
+			const { token, user } = response.data;
+
+			if (token) {
+				localStorage.setItem('token', token);
+				updateUser(user);
+				navigate('/dashboard');
+			}
+		} catch (error: any) {
+			if (error.response && error.response.data.message) {
+				setError(error.response.data.message);
+			} else {
+				setError('Something went wrong. Please try again!');
+			}
+		}
 	};
 	return (
 		<div className="flex flex-col items-center  h-screen w-full gap-10">
