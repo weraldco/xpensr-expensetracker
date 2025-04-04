@@ -18,6 +18,7 @@ import { Input } from '@/components/ui/input';
 import { UserContext } from '@/context/userContext';
 import { API_PATHS } from '@/utils/apiPaths';
 import axiosInstance from '@/utils/axiosInstance';
+import uploadImage from '@/utils/uploadImage';
 import { useContext, useState } from 'react';
 import { Link, useNavigate } from 'react-router';
 import ProfilePhotoSelector from './ProfilePhotoSelector';
@@ -31,40 +32,21 @@ export interface ImageT {
 	lastModified: number;
 }
 
-const imageSchema = z.object({
-	name: z.string(),
-	size: z.number(),
-	type: z.string(),
-	webkitRelativePath: z.string(),
-	lastModifiedDate: z.date(),
-	lastModified: z.number(),
-});
 const formSchema = z.object({
 	fullName: z.string().min(10),
 	email: z.string().email({ message: 'Invalid email address' }),
 	password: z.string().min(4),
 	repeatPassword: z.string().min(4),
-	profileImageUrl: imageSchema.optional(),
+	profileImageUrl: z.string(),
 });
 const RegistrationForm = () => {
+	const [profilePic, setProfilePic] = useState(null);
 	const [error, setError] = useState<string>('');
 
 	const { updateUser } = useContext(UserContext);
+
 	const navigate = useNavigate();
-	const handleImageChange = (data: ImageT | null) => {
-		if (data !== null) {
-			form.setValue('profileImageUrl', {
-				name: data.name,
-				size: data.size,
-				type: data.type,
-				webkitRelativePath: data.webkitRelativePath,
-				lastModifiedDate: data.lastModifiedDate,
-				lastModified: data.lastModified,
-			});
-		} else {
-			form.setValue('profileImageUrl', undefined);
-		}
-	};
+	let profileImageUrl = '';
 	const form = useForm<z.infer<typeof formSchema>>({
 		resolver: zodResolver(formSchema),
 		defaultValues: {
@@ -72,15 +54,18 @@ const RegistrationForm = () => {
 			email: '',
 			password: '',
 			repeatPassword: '',
-			profileImageUrl: undefined,
+			profileImageUrl: '',
 		},
 	});
 
 	const onSubmit = async (values: z.infer<typeof formSchema>) => {
 		setError('');
 		try {
-			const { fullName, email, password, repeatPassword, profileImageUrl } =
-				values;
+			if (profilePic) {
+				const imgUploadResponse = await uploadImage(profilePic);
+				profileImageUrl = imgUploadResponse.imageUrl || '';
+			}
+			const { fullName, email, password, repeatPassword } = values;
 
 			const response = await axiosInstance.post(API_PATHS.AUTH.REGISTER, {
 				fullName,
@@ -118,7 +103,7 @@ const RegistrationForm = () => {
 						onSubmit={form.handleSubmit(onSubmit)}
 						className="space-y-6 w-[400px]"
 					>
-						<ProfilePhotoSelector imageData={handleImageChange} />
+						<ProfilePhotoSelector image={profilePic} setImage={setProfilePic} />
 						<FormField
 							control={form.control}
 							name="fullName"

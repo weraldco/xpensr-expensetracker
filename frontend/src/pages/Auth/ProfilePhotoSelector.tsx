@@ -1,17 +1,16 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { useEffect, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import { LuTrash, LuUpload, LuUser } from 'react-icons/lu';
-import { ImageT } from './RegistrationForm';
 
 const ProfilePhotoSelector = ({
-	imageData,
+	image,
+	setImage,
 }: {
-	imageData: (data: ImageT | null) => void;
+	image: any;
+	setImage: any;
 }) => {
 	const inputRef = useRef<HTMLInputElement | null>(null);
 	const [previewUrl, setPreviewUrl] = useState<string>('');
-	const [image, setImage] = useState<ImageT | null>(null);
 
 	const handleImageChange = (event: any) => {
 		const file = event.target.files[0];
@@ -34,12 +33,6 @@ const ProfilePhotoSelector = ({
 		}
 	};
 
-	const sendDataToParent = () => {
-		imageData(image);
-	};
-	useEffect(() => {
-		sendDataToParent();
-	}, [image]);
 	return (
 		<div className="flex justify-center mb-6">
 			<input
