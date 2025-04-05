@@ -1,8 +1,10 @@
+import DashboardLayout from '@/components/layout/DashboardLayout';
+
 const Income = () => {
 	return (
-		<div>
+		<DashboardLayout activeMenu="Income">
 			<h1>Income</h1>
-		</div>
+		</DashboardLayout>
 	);
 };
 
