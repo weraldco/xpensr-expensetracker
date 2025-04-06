@@ -1,5 +1,4 @@
 import { Navigate, Route, Routes } from 'react-router';
-import Navbar from './components/Navbar/Navbar';
 import LoginForm from './pages/Auth/LoginForm';
 import RegistrationForm from './pages/Auth/RegistrationForm';
 import Expenses from './pages/Dashboard/Expenses';

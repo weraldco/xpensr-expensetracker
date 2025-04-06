@@ -2,7 +2,9 @@ import { FC, useState } from 'react';
 import { IoIosMenu, IoMdClose } from 'react-icons/io';
 import Sidebar from './Sidebar';
 
-interface Props {}
+interface Props {
+	activeMenu: string;
+}
 
 const Navbar: FC<Props> = ({ activeMenu }) => {
 	const [openSideMenu, setOpenSideMenu] = useState(false);

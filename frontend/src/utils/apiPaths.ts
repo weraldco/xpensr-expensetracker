@@ -9,7 +9,7 @@ export const API_PATHS = {
 		GET_USER_INFO: `${API_ROOT}/auth/getUser`,
 	},
 	DASHBOARD: {
-		GET_DATA: `${API_ROOT}/dashbboard`,
+		GET_DATA: `${API_ROOT}/dashboard`,
 	},
 	INCOME: {
 		ADD_INCOME: `${API_ROOT}/income/add`,

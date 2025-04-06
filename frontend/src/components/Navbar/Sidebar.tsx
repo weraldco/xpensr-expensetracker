@@ -1,7 +1,9 @@
 import { UserContext } from '@/context/userContext';
 import { SIDE_MENU_DATA } from '@/utils/data';
 import { ReactNode, useContext } from 'react';
+import { LuLogOut } from 'react-icons/lu';
 import { Link, useNavigate } from 'react-router';
+import CharAvatar from '../Card/CharAvatar';
 
 const Sidebar = ({
 	activeMenu,
@@ -27,12 +29,14 @@ const Sidebar = ({
 			{/* User info */}
 			<div className=" flex flex-col justify-center items-center text-[0.95em] font-bold h-[150px] gap-4">
 				<div className="w-[70px] h-[70px]rounded-full ">
-					{user?.profileImageUrl && (
+					{user?.profileImageUrl ? (
 						<img
 							src={user?.profileImageUrl ? user.profileImageUrl : ''}
 							className="w-full h-full object-cover rounded-full bg-amber-50"
 							alt=""
 						/>
+					) : (
+						<CharAvatar user={user?.fullName} />
 					)}
 				</div>
 				<div className="text-black">{user?.fullName}</div>
@@ -49,6 +53,12 @@ const Sidebar = ({
 						{item.label}
 					</MenuItem>
 				))}
+				<button
+					onClick={handleLogout}
+					className={`flex gap-2 items-center duration-200 px-8 py-3 text-[0.9em] rounded-md inactive cursor-pointer`}
+				>
+					<LuLogOut></LuLogOut>Logout
+				</button>
 			</div>
 		</div>
 	);
