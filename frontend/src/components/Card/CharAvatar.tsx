@@ -2,7 +2,7 @@ import { getInitials } from '@/utils/helper';
 import { FC } from 'react';
 
 interface Props {
-	user: string;
+	user: string | undefined;
 }
 
 const CharAvatar: FC<Props> = ({ user }) => {

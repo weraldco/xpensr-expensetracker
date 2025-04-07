@@ -18,10 +18,11 @@ const Sidebar = ({
 
 	const handleLogout = () => {
 		localStorage.clear();
-		clearUser();
+		if (user) {
+			clearUser();
+		}
 		navigate('/login');
 	};
-
 	return (
 		<div
 			className={`top-0 bottom-0 left-0 border-r w-[200px] sticky h-[calc(100vh-105px)] z-30 bg-white ${className}`}
@@ -29,9 +30,9 @@ const Sidebar = ({
 			{/* User info */}
 			<div className=" flex flex-col justify-center items-center text-[0.95em] font-bold h-[150px] gap-4">
 				<div className="w-[70px] h-[70px]rounded-full ">
-					{user?.profileImageUrl ? (
+					{user && user?.profileImageUrl ? (
 						<img
-							src={user?.profileImageUrl ? user.profileImageUrl : ''}
+							src={user.profileImageUrl}
 							className="w-full h-full object-cover rounded-full bg-amber-50"
 							alt=""
 						/>

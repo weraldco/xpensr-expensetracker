@@ -59,7 +59,7 @@
 }
 .poppins-semibold {
 	font-family: 'Poppins', sans-serif;
-	font-weight: 600;
+	font-weight: 500;
 	font-style: normal;
 }
 
@@ -189,5 +189,12 @@
 
 	.income {
 		@apply text-green-400 bg-green-100;
+	}
+	.card {
+		@apply bg-white p-4 rounded-md shadow-2xl shadow-gray-100;
+	}
+
+	.card-btn {
+		@apply bg-[#f1f1f1] flex text-xs items-center justify-center gap-3	 px-4 py-2 rounded hover:opacity-70 active:opacity-90 text-gray-800 cursor-pointer duration-200;
 	}
 }

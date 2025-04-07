@@ -14,13 +14,13 @@ const DashboardLayout: FC<Props> = ({ children, activeMenu }) => {
 	const { user } = useContext(UserContext);
 
 	return (
-		<div className="">
+		<div className="bg-[#fafafa]">
 			<Navbar activeMenu={activeMenu} />
 			{user && (
-				<div className="flex relative ">
-					<Sidebar activeMenu={activeMenu} className="max-[1080px]:hidden" />
+				<div className="flex relative md:h-[calc(100vh-105px)]">
+					<Sidebar activeMenu={activeMenu} className="max-[1080px]:hidden " />
 
-					<div className="grow mx-5">{children}</div>
+					<div className="grow mx-5 pt-4">{children}</div>
 				</div>
 			)}
 		</div>

@@ -1,4 +1,4 @@
-export const getInitials = (name: string) => {
+export const getInitials = (name: string | undefined) => {
 	if (!name) return '';
 
 	const splitNames = name.split(' ');
@@ -21,10 +21,17 @@ export const formatAmount = (number: number) => {
 };
 
 export const formatDate = (date: Date) => {
+	// const d = new Date(date);
+	// const day = d.getDate();
+	// const monthYear = d.toLocaleDateString('en-EN', {
+	// 	month: 'short',
+	// 	year: 'numeric',
+	// });
 	return new Date(date).toLocaleDateString('en-EN', {
-		weekday: 'short',
-		month: 'short',
 		day: '2-digit',
+		month: 'short',
 		year: 'numeric',
 	});
+
+	// return `${day} ${monthYear}`;
 };

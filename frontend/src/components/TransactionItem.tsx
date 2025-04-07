@@ -13,9 +13,10 @@ interface DataT {
 }
 interface Props {
 	data: DataT;
+	optType?: string;
 }
 
-const TransactionItem: FC<Props> = ({ data }) => {
+const TransactionItem: FC<Props> = ({ data, optType }) => {
 	const { amount, category, source, date, icon, type } = data;
 
 	return (
@@ -25,12 +26,16 @@ const TransactionItem: FC<Props> = ({ data }) => {
 					{icon ? icon : <MdOutlineShoppingCart size={22} />}
 				</div>
 				<div>
-					<h2 className="font-semibold">{!category ? source : category}</h2>
-					<span className=" text-gray-500 ">{formatDate(date)}</span>
+					<h2 className="font-semibold text-sm">
+						{!category ? source : category}
+					</h2>
+					<span className=" text-gray-500 text-xs">{formatDate(date)}</span>
 				</div>
 			</div>
 			<div
-				className={`${type}  font-bold flex items-center gap-2 p-2 rounded-md`}
+				className={`${
+					type || optType
+				} text-xs font-bold flex items-center gap-2 p-2 rounded-md`}
 			>
 				<span>
 					{type === 'expense' ? '-' : '+'} {formatAmount(amount)}

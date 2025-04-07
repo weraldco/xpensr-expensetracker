@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import {
 	Form,
@@ -66,7 +65,10 @@ const RegistrationForm = () => {
 				profileImageUrl = imgUploadResponse.imageUrl || '';
 			}
 			const { fullName, email, password, repeatPassword } = values;
-
+			if (password !== repeatPassword) {
+				setError("Password didn't match!");
+				return;
+			}
 			const response = await axiosInstance.post(API_PATHS.AUTH.REGISTER, {
 				fullName,
 				email,
@@ -97,6 +99,7 @@ const RegistrationForm = () => {
 					<div className="text-xs text-gray-500">
 						Join us today by entering your details below.
 					</div>
+					{error && <div className="text-red-400 text-sm">{error}</div>}
 				</div>
 				<Form {...form}>
 					<form
