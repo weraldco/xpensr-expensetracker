@@ -2,7 +2,6 @@ export type UserContextType = {
 	user: UserType | null;
 	updateUser: (data: UserType | null) => void;
 	clearUser: () => void;
-	loading: boolean;
 	dashboardData: DashboardDataT | null;
 };
 

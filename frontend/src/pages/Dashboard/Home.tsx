@@ -3,15 +3,32 @@ import RecentTransactions from '@/components/Dashboard/RecentTransactions';
 import HeadExpenseItem from '@/components/HeadExpenseItem';
 import DashboardLayout from '@/components/layout/DashboardLayout';
 import LoadingState from '@/components/LoadingState';
-import { UserContext } from '@/context/userContext';
-import { useContext } from 'react';
+import { API_PATHS } from '@/utils/apiPaths';
+import axiosInstance from '@/utils/axiosInstance';
+import { DashboardDataT } from '@/utils/types';
+import { useEffect, useState } from 'react';
 import { IoWalletOutline } from 'react-icons/io5';
 import { LuWalletCards } from 'react-icons/lu';
 import { PiHandCoins } from 'react-icons/pi';
 
 const Home = () => {
-	const { dashboardData } = useContext(UserContext);
+	const [dashboardData, setDashboardData] = useState<DashboardDataT | null>(
+		null
+	);
 
+	const getDashboardData = async () => {
+		try {
+			const response = await axiosInstance.get(API_PATHS.DASHBOARD.GET_DATA);
+
+			setDashboardData(response.data);
+		} catch (error) {
+			console.error('Failed to fetch dashboard data', error);
+		}
+	};
+
+	useEffect(() => {
+		getDashboardData();
+	}, []);
 	return (
 		<DashboardLayout activeMenu="Dashboard">
 			{dashboardData ? (

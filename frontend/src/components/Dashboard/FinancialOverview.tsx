@@ -12,7 +12,7 @@ const FinancialOverview: FC<Props> = ({
 	totalExpenses,
 	totalIncome,
 }) => {
-	const COLORS = ['#8e51ff', '#de5454', '#67c254'];
+	const COLORS = ['#8e51ff', '#de5454', '#f78907'];
 	const balanceData = [
 		{ name: 'Total Balance', amount: totalBalance },
 		{ name: 'Total Expenses', amount: totalExpenses },

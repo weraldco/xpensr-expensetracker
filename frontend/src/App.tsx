@@ -8,7 +8,6 @@ import Income from './pages/Dashboard/Income';
 function App() {
 	return (
 		<div className="flex flex-col">
-			{/* <div className="absolute w-full pl-[220px] pt-[110px] h-screen  bg-[#f9f9f9] p-4 gap-4 flex flex-col"> */}
 			<Routes>
 				<Route path="/" element={<Root />} />
 				<Route path="/login" element={<LoginForm />} />
@@ -17,7 +16,6 @@ function App() {
 				<Route path="/expenses" element={<Expenses />} />
 				<Route path="/income" element={<Income />} />
 			</Routes>
-			{/* </div> */}
 		</div>
 	);
 }

@@ -17,7 +17,7 @@ const DashboardLayout: FC<Props> = ({ children, activeMenu }) => {
 		<div className="bg-[#fafafa]">
 			<Navbar activeMenu={activeMenu} />
 			{user && (
-				<div className="flex relative md:h-[calc(100vh-105px)]">
+				<div className="flex relative md:h-[calc(100%-105px)]">
 					<Sidebar activeMenu={activeMenu} className="max-[1080px]:hidden " />
 
 					<div className="grow mx-5 pt-4">{children}</div>

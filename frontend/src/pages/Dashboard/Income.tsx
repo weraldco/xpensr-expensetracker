@@ -5,14 +5,15 @@ import { UserContext } from '@/context/userContext';
 import { useContext } from 'react';
 
 const Income = () => {
-	const { dashboardData } = useContext(UserContext);
+	// const { dashboardData } = useContext(UserContext);
 	return (
 		<DashboardLayout activeMenu="Income">
-			{dashboardData ? (
+			{/* {dashboardData ? (
 				<IncomeTransactions transactions={dashboardData.last60DaysIncome} />
 			) : (
 				<LoadingState />
-			)}
+			)} */}
+			<></>
 		</DashboardLayout>
 	);
 };

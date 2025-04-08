@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import { API_PATHS } from '@/utils/apiPaths';
 import axiosInstance from '@/utils/axiosInstance';
 import { DashboardDataT, UserContextType, UserType } from '@/utils/types';
@@ -12,7 +11,6 @@ const defaultValue: UserContextType = {
 	user: null,
 	updateUser: () => null,
 	clearUser: () => null,
-	loading: false,
 	dashboardData: null,
 };
 
@@ -23,7 +21,6 @@ const UserProvider: FC<Props> = ({ children }) => {
 	const [dashboardData, setDashboardData] = useState<DashboardDataT | null>(
 		null
 	);
-	const [loading, setLoading] = useState(false);
 
 	// Function to updatge user data
 	const updateUser = (userData: UserType | null) => {
@@ -36,22 +33,16 @@ const UserProvider: FC<Props> = ({ children }) => {
 	};
 
 	const getDashboardData = async () => {
-		if (loading) return;
-
-		setLoading(true);
 		try {
 			const response = await axiosInstance.get(API_PATHS.DASHBOARD.GET_DATA);
-
 			setDashboardData(response.data);
 		} catch (error) {
 			console.error('Failed to fetch dashboard data', error);
-		} finally {
-			setLoading(false);
 		}
 	};
 
 	useEffect(() => {
-		getDashboardData();
+		// getDashboardData();
 	}, []);
 
 	const value = {
@@ -59,7 +50,6 @@ const UserProvider: FC<Props> = ({ children }) => {
 		updateUser,
 		clearUser,
 		dashboardData,
-		loading,
 	};
 	return (
 		<div>
