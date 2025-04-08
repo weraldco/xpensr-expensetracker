@@ -28,7 +28,7 @@ const Sidebar = ({
 			className={`top-0 bottom-0 left-0 border-r w-[200px] sticky h-[calc(100vh-105px)] z-30 bg-white ${className}`}
 		>
 			{/* User info */}
-			<div className=" flex flex-col justify-center items-center text-[0.95em] font-bold h-[150px] gap-4">
+			<div className=" flex flex-col justify-center items-center text-[0.95em] font-bold h-[150px] gap-4 ">
 				<div className="w-[70px] h-[70px]rounded-full ">
 					{user && user?.profileImageUrl ? (
 						<img

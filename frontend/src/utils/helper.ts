@@ -1,3 +1,5 @@
+import { ExpenseT } from './types';
+
 export const getInitials = (name: string | undefined) => {
 	if (!name) return '';
 
@@ -34,4 +36,13 @@ export const formatDate = (date: Date) => {
 	});
 
 	// return `${day} ${monthYear}`;
+};
+
+export const prepareExpenseBarChartData = (data: ExpenseT[] = []) => {
+	const chartData = data.map((item) => ({
+		category: item?.category,
+		amount: item?.amount,
+	}));
+
+	return chartData;
 };
