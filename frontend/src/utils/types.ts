@@ -60,3 +60,9 @@ export type last60DaysIncomeT = {
 	total: number;
 	transaction: IncomeT[];
 };
+export type ValuesT = {
+	source: string;
+	amount: string;
+	date: Date;
+	icon: string;
+};

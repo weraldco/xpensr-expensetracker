@@ -33,7 +33,11 @@ const TransactionItem: FC<Props> = ({
 		<div className="group flex items-center justify-between text-[0.85em] hover:bg-gray-50 p-2 duration-200">
 			<div className="flex gap-4 items-center">
 				<div className="p-4 bg-gray-100 rounded-full">
-					{icon ? icon : <MdOutlineShoppingCart size={22} />}
+					{icon ? (
+						<img src={icon} alt="Icon" className="h-7 w-7" />
+					) : (
+						<MdOutlineShoppingCart size={22} />
+					)}
 				</div>
 				<div>
 					<h2 className="font-semibold text-sm">
@@ -43,7 +47,7 @@ const TransactionItem: FC<Props> = ({
 				</div>
 			</div>
 			<div className="group flex gap-2 duration-200">
-				{btnDeleteShow && id && (
+				{btnDeleteShow && (
 					<button
 						className="group-hover:block hidden duration-200 cursor-pointer"
 						onClick={() => onClick(id)}

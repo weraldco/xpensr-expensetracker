@@ -5,11 +5,13 @@ import TransactionItem from '../TransactionItem';
 
 interface Props {
 	transactions: TransactionT[] | null;
+	onDelete: () => void;
+	onDownload: () => void;
 }
 const handleClick = (id: string) => {
 	console.log(`deleted`, id);
 };
-const IncomeSources: FC<Props> = ({ transactions }) => {
+const IncomeSources: FC<Props> = ({ transactions, onDelete, onDownload }) => {
 	return (
 		<div className="card">
 			{/* Header */}

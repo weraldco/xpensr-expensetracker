@@ -2,7 +2,6 @@ import { prepareIncomeBarChartData } from '@/utils/helper';
 import { TransactionT } from '@/utils/types';
 import { FC, useEffect, useState } from 'react';
 import { FaPlus } from 'react-icons/fa';
-import AddIncomeForm from '../AddIncomeForm';
 import CustomBarChart from '../Charts/CustomBarChart';
 import { ChartDataT } from '../Dashboard/Last30DaysExpensesChart';
 interface Props {
@@ -11,8 +10,6 @@ interface Props {
 }
 
 const IncomeOverview: FC<Props> = ({ transactions, onAddIncome }) => {
-	// const [showModal, setShowModal] = useState(true);
-
 	const [chartData, setChartData] = useState<ChartDataT[] | []>([]);
 
 	useEffect(() => {
@@ -40,7 +37,6 @@ const IncomeOverview: FC<Props> = ({ transactions, onAddIncome }) => {
 					<FaPlus size={14} />
 					Add Income
 				</button>
-				{/* {showModal && <AddIncomeForm></AddIncomeForm>} */}
 			</div>
 			<div className="mt-10">
 				<CustomBarChart data={chartData} />

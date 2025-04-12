@@ -19,6 +19,7 @@ import { API_PATHS } from '@/utils/apiPaths';
 import axiosInstance from '@/utils/axiosInstance';
 import uploadImage from '@/utils/uploadImage';
 import { useContext, useState } from 'react';
+import toast from 'react-hot-toast';
 import { Link, useNavigate } from 'react-router';
 import ProfilePhotoSelector from './ProfilePhotoSelector';
 
@@ -75,7 +76,7 @@ const RegistrationForm = () => {
 				password,
 				profileImageUrl,
 			});
-
+			toast.success(`Congratulation, you've successfully registered.`);
 			const { token, user } = response.data;
 
 			if (token) {

@@ -1,5 +1,6 @@
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
+import { Toaster } from 'react-hot-toast';
 import { BrowserRouter } from 'react-router';
 import App from './App.tsx';
 import UserProvider from './context/userContext.tsx';
@@ -10,6 +11,14 @@ createRoot(document.getElementById('root')!).render(
 		<BrowserRouter>
 			<StrictMode>
 				<App />
+				<Toaster
+					toastOptions={{
+						className: '',
+						style: {
+							fontSize: '13px',
+						},
+					}}
+				></Toaster>
 			</StrictMode>
 		</BrowserRouter>
 	</UserProvider>
