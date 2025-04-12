@@ -8,11 +8,12 @@ interface Props {
 }
 
 export interface ChartDataT {
-	category: string | undefined;
+	category?: string | undefined;
+	source?: string | undefined;
 	amount: number;
 }
 
-const Last30DaysExpenses: FC<Props> = ({ data }) => {
+const Last30DaysExpensesChart: FC<Props> = ({ data }) => {
 	const [chartData, setChartData] = useState<ChartDataT[] | []>([]);
 
 	useEffect(() => {
@@ -29,4 +30,4 @@ const Last30DaysExpenses: FC<Props> = ({ data }) => {
 	);
 };
 
-export default Last30DaysExpenses;
+export default Last30DaysExpensesChart;

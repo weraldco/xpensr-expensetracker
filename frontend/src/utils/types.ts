@@ -32,6 +32,8 @@ export type ExpenseT = {
 };
 
 export type IncomeT = {
+	_id: string | undefined;
+	map: any;
 	id: string;
 	amount: number;
 	source?: string;

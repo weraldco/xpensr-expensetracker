@@ -1,6 +1,5 @@
 import { last60DaysIncomeT } from '@/utils/types';
 import { FC } from 'react';
-import { FaPlus } from 'react-icons/fa';
 import SeeAllBtn from '../SeeAllBtn';
 import TransactionItem from '../TransactionItem';
 
@@ -24,8 +23,8 @@ const IncomeTransactions: FC<Props> = ({ transactions }) => {
 			</div>
 
 			<div>
-				{transaction.map((transaction) => (
-					<TransactionItem data={transaction} optType="income" />
+				{transaction.map((transaction, index) => (
+					<TransactionItem key={index} data={transaction} optType="income" />
 				))}
 			</div>
 		</div>

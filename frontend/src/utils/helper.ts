@@ -1,4 +1,4 @@
-import { ExpenseT } from './types';
+import { TransactionT } from './types';
 
 export const getInitials = (name: string | undefined) => {
 	if (!name) return '';
@@ -38,11 +38,25 @@ export const formatDate = (date: Date) => {
 	// return `${day} ${monthYear}`;
 };
 
-export const prepareExpenseBarChartData = (data: ExpenseT[] = []) => {
+export const prepareExpenseBarChartData = (data: TransactionT[] | [] = []) => {
 	const chartData = data.map((item) => ({
 		category: item?.category,
 		amount: item?.amount,
 	}));
 
 	return chartData;
+};
+
+export const prepareIncomeBarChartData = (data: TransactionT[] | [] = []) => {
+	const sortedData = [...data].sort(
+		(a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()
+	);
+
+	const charData = sortedData.map((item) => ({
+		month: formatDate(item.date),
+		amount: item.amount,
+		source: item.source,
+	}));
+
+	return charData;
 };

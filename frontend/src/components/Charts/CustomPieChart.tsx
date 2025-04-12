@@ -10,13 +10,13 @@ import {
 import CustomLegend from './CustomLegend';
 import CustomTooltip from './CustomTooltip';
 
-interface DataT {
-	name: string;
+export interface DataT {
+	name: string | undefined;
 	amount: number;
 }
 
 interface Props {
-	data: DataT[];
+	data: DataT[] | undefined;
 	label: string;
 	totalAmount: string;
 	colors: string[];
@@ -43,9 +43,13 @@ const CustomPieChart: FC<Props> = ({
 					innerRadius={100}
 					labelLine={false}
 				>
-					{data.map((_, index) => (
-						<Cell key={`cell-${index}`} fill={colors[index & colors.length]} />
-					))}
+					{data !== undefined &&
+						data.map((_, index) => (
+							<Cell
+								key={`cell-${index}`}
+								fill={colors[index & colors.length]}
+							/>
+						))}
 				</Pie>
 				<Tooltip content={<CustomTooltip />} />
 				<Legend content={<CustomLegend payload={[]} />} />

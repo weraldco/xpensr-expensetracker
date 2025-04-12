@@ -20,7 +20,7 @@ const DashboardLayout: FC<Props> = ({ children, activeMenu }) => {
 				<div className="flex relative md:h-[calc(100%-105px)]">
 					<Sidebar activeMenu={activeMenu} className="max-[1080px]:hidden " />
 
-					<div className="grow mx-5 pt-4">{children}</div>
+					<div className="grow mx-5">{children}</div>
 				</div>
 			)}
 		</div>

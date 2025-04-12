@@ -18,8 +18,8 @@ const ExpenseTransaction: FC<Props> = ({ transactions }) => {
 			</div>
 
 			<div>
-				{transaction.map((transaction) => (
-					<TransactionItem data={transaction} optType="expense" />
+				{transaction.map((transaction, index) => (
+					<TransactionItem key={index} data={transaction} optType="expense" />
 				))}
 			</div>
 		</div>

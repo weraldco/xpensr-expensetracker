@@ -1,7 +1,8 @@
 import ExpenseTransaction from '@/components/Dashboard/ExpenseTransaction';
 import FinancialOverview from '@/components/Dashboard/FinancialOverview';
 import IncomeTransactions from '@/components/Dashboard/IncomeTransactions';
-import Last30DaysExpenses from '@/components/Dashboard/Last30DaysExpenses';
+import Last30DaysExpenses from '@/components/Dashboard/Last30DaysExpensesChart';
+import Last60DaysIncome from '@/components/Dashboard/Last60DaysIncomeChart';
 import RecentTransactions from '@/components/Dashboard/RecentTransactions';
 import HeadExpenseItem from '@/components/HeadExpenseItem';
 import DashboardLayout from '@/components/layout/DashboardLayout';
@@ -67,7 +68,7 @@ const Home = () => {
 							totalIncome={dashboardData.totalIncome || 0}
 						/>
 					</div>
-					<div>
+					<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
 						<ExpenseTransaction
 							transactions={dashboardData.last30DaysExpenses}
 						/>
@@ -75,7 +76,13 @@ const Home = () => {
 							data={dashboardData?.last30DaysExpenses?.transaction || []}
 						/>
 					</div>
-					<div>
+					<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+						<Last60DaysIncome
+							data={
+								dashboardData.last60DaysIncome.transaction.slice(0, 4) || []
+							}
+							totalIncome={dashboardData.totalIncome || 0}
+						/>
 						<IncomeTransactions transactions={dashboardData.last60DaysIncome} />
 					</div>
 				</div>
