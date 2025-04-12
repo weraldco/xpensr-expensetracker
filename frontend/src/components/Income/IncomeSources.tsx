@@ -5,12 +5,10 @@ import TransactionItem from '../TransactionItem';
 
 interface Props {
 	transactions: TransactionT[] | null;
-	onDelete: () => void;
+	onDelete: (id: string) => void;
 	onDownload: () => void;
 }
-const handleClick = (id: string) => {
-	console.log(`deleted`, id);
-};
+
 const IncomeSources: FC<Props> = ({ transactions, onDelete, onDownload }) => {
 	return (
 		<div className="card">
@@ -22,7 +20,7 @@ const IncomeSources: FC<Props> = ({ transactions, onDelete, onDownload }) => {
 						Track your earnings over time and analyze your income trends.
 					</span>
 				</div>
-				<button className="card-btn ">
+				<button className="card-btn">
 					<LuDownload size={18} />
 					Download
 				</button>
@@ -36,7 +34,7 @@ const IncomeSources: FC<Props> = ({ transactions, onDelete, onDownload }) => {
 							key={index}
 							optType="income"
 							btnDeleteShow
-							onClick={handleClick}
+							onClick={onDelete}
 						/>
 					))}
 			</div>

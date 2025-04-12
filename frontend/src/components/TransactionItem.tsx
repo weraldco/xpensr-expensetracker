@@ -18,7 +18,7 @@ interface Props {
 	data: TransactionT;
 	optType?: string;
 	btnDeleteShow?: boolean;
-	onClick?: (id: string) => void;
+	onClick: (id: string) => void;
 }
 
 const TransactionItem: FC<Props> = ({
@@ -27,30 +27,30 @@ const TransactionItem: FC<Props> = ({
 	btnDeleteShow,
 	onClick,
 }) => {
-	const { amount, category, source, date, icon, type, id } = data;
-
 	return (
 		<div className="group flex items-center justify-between text-[0.85em] hover:bg-gray-50 p-2 duration-200">
 			<div className="flex gap-4 items-center">
 				<div className="p-4 bg-gray-100 rounded-full">
-					{icon ? (
-						<img src={icon} alt="Icon" className="h-7 w-7" />
+					{data.icon ? (
+						<img src={data.icon} alt="Icon" className="h-7 w-7" />
 					) : (
 						<MdOutlineShoppingCart size={22} />
 					)}
 				</div>
 				<div>
 					<h2 className="font-semibold text-sm">
-						{!category ? source : category}
+						{!data.category ? data.source : data.category}
 					</h2>
-					<span className=" text-gray-500 text-xs">{formatDate(date)}</span>
+					<span className=" text-gray-500 text-xs">
+						{formatDate(data.date)}
+					</span>
 				</div>
 			</div>
 			<div className="group flex gap-2 duration-200">
 				{btnDeleteShow && (
 					<button
 						className="group-hover:block hidden duration-200 cursor-pointer"
-						onClick={() => onClick(id)}
+						onClick={() => onClick(data._id as string)}
 					>
 						<MdOutlineDelete
 							size={20}
@@ -60,13 +60,13 @@ const TransactionItem: FC<Props> = ({
 				)}
 				<div
 					className={`${
-						type || optType
+						data.type || optType
 					} text-xs font-bold flex items-center gap-2 p-2 rounded-md`}
 				>
 					<span>
-						{type === 'expense' ? '-' : '+'} {formatAmount(amount)}
+						{data.type === 'expense' ? '-' : '+'} {formatAmount(data.amount)}
 					</span>
-					{type === type ? (
+					{data.type === data.type ? (
 						<FaArrowTrendDown size={18} />
 					) : (
 						<FaArrowTrendUp size={18} />

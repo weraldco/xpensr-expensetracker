@@ -13,7 +13,8 @@ export type UserType = {
 };
 
 export type TransactionT = {
-	id: string;
+	id?: string;
+	_id?: string;
 	amount: number;
 	category?: string;
 	source?: string;
