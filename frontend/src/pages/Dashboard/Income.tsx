@@ -1,27 +1,27 @@
+import DataOverviews from '@/components/DataOverviews';
+import DataSources from '@/components/DataSources';
 import DeleteAlert from '@/components/DeleteAlert';
 import AddIncomeForm from '@/components/Income/AddIncomeForm';
-import IncomeOverview from '@/components/Income/IncomeOverview';
-import IncomeSources from '@/components/Income/IncomeSources';
 import DashboardLayout from '@/components/layout/DashboardLayout';
 import Modal from '@/components/Modal';
+import { UserContext } from '@/context/userContext';
 import { API_PATHS } from '@/utils/apiPaths';
 import axiosInstance from '@/utils/axiosInstance';
-import { TransactionT, ValuesT } from '@/utils/types';
-import { useEffect, useState } from 'react';
-import toast from 'react-hot-toast';
+import { TransactionT } from '@/utils/types';
+import { useContext, useEffect, useState } from 'react';
 
 const Income = () => {
+	const {
+		handleAdd,
+		openAddModal,
+		setOpenAddModal,
+		openDeleteAlert,
+		setOpenDeleteAlert,
+		handleDelete,
+	} = useContext(UserContext);
+
 	const [incomeData, setIncomeData] = useState<TransactionT[] | []>([]);
 	const [loading, setLoading] = useState(false);
-
-	const [openDeleteAlert, setOpenDeleteAlert] = useState<{
-		show: boolean;
-		data: string;
-	}>({
-		show: false,
-		data: '',
-	});
-	const [openAddIncomeModal, setOpenAddIncomeModal] = useState(false);
 
 	// Get All Income Data
 	const fetchIncomeData = async () => {
@@ -41,43 +41,26 @@ const Income = () => {
 		}
 	};
 
-	// Handle Add Income
-	const handleAddIncome = async (values: ValuesT) => {
-		try {
-			await axiosInstance.post(API_PATHS.INCOME.ADD_INCOME, values);
-			setOpenAddIncomeModal(false);
-			// console.log('Success Added');
-			toast.success('Successfull Added New Income');
-			fetchIncomeData();
-		} catch (error) {
-			console.error('Something went wrong! Try again!', error);
-		}
-	};
-	const deleteIncome = async (id: string) => {
-		try {
-			await axiosInstance.delete(API_PATHS.INCOME.DELETE_INCOME(id));
-			setOpenDeleteAlert({ show: false, data: '' });
-			toast.success('Successfully Delete Income!');
-			fetchIncomeData();
-		} catch (error) {
-			console.error('Something went wrong, try again!', error);
-		}
-	};
 	const handleDownloadIncomeDetails = () => {};
 	useEffect(() => {
 		fetchIncomeData();
+
 		return () => {};
 	}, []);
-
 	return (
 		<DashboardLayout activeMenu="Income">
 			<div className="my-5 mx-auto">
 				<div className="flex flex-col gap-4">
-					<IncomeOverview
+					<DataOverviews
+						subtitle="
+						Track your earnings over time and analyze your income trends."
+						title="Income Overviews"
 						transactions={incomeData}
-						onAddIncome={() => setOpenAddIncomeModal(true)}
+						onAdd={() => setOpenAddModal(true)}
+						btnLabel="Add Income"
 					/>
-					<IncomeSources
+					<DataSources
+						title="Income Sources"
 						transactions={incomeData}
 						onDelete={(id) => {
 							setOpenDeleteAlert({ show: true, data: id });
@@ -86,11 +69,15 @@ const Income = () => {
 					/>
 				</div>
 				<Modal
-					isOpen={openAddIncomeModal}
-					onClose={() => setOpenAddIncomeModal(false)}
+					isOpen={openAddModal}
+					onClose={() => setOpenAddModal(false)}
 					title="Add Income"
 				>
-					<AddIncomeForm onAddIncome={handleAddIncome} />
+					<AddIncomeForm
+						onAddIncome={(values) => {
+							handleAdd(values, fetchIncomeData, API_PATHS.INCOME.ADD_INCOME);
+						}}
+					/>
 				</Modal>
 				<Modal
 					isOpen={openDeleteAlert.show}
@@ -99,7 +86,12 @@ const Income = () => {
 				>
 					<DeleteAlert
 						content="Are you sure you want to delete this income?"
-						onDelete={() => deleteIncome(openDeleteAlert.data)}
+						onDelete={() =>
+							handleDelete(
+								fetchIncomeData,
+								API_PATHS.INCOME.DELETE_INCOME(openDeleteAlert.data)
+							)
+						}
 					/>
 				</Modal>
 			</div>

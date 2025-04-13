@@ -1,8 +1,22 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { Dispatch, SetStateAction } from 'react';
+
 export type UserContextType = {
 	user: UserType | null;
 	updateUser: (data: UserType | null) => void;
 	clearUser: () => void;
-	dashboardData: DashboardDataT | null;
+	handleAdd: (
+		values: ValuesT,
+		fetchData: () => Promise<void>,
+		path: string
+	) => Promise<void>;
+	handleDelete: (fetchData: () => Promise<void>, path: string) => void;
+	openAddModal: boolean;
+	setOpenAddModal: Dispatch<SetStateAction<boolean>>;
+	openDeleteAlert: { show: boolean; data: string | '' };
+	setOpenDeleteAlert: Dispatch<
+		SetStateAction<{ show: boolean; data: string | '' }>
+	>;
 };
 
 export type UserType = {
@@ -62,7 +76,8 @@ export type last60DaysIncomeT = {
 	transaction: IncomeT[];
 };
 export type ValuesT = {
-	source: string;
+	source?: string;
+	category?: string;
 	amount: string;
 	date: Date;
 	icon: string;

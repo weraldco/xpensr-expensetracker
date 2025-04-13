@@ -1,21 +1,27 @@
 import { TransactionT } from '@/utils/types';
 import { FC } from 'react';
 import { LuDownload } from 'react-icons/lu';
-import TransactionItem from '../TransactionItem';
+import TransactionItem from './TransactionItem';
 
 interface Props {
 	transactions: TransactionT[] | null;
 	onDelete: (id: string) => void;
 	onDownload: () => void;
+	title: string;
 }
 
-const IncomeSources: FC<Props> = ({ transactions, onDelete, onDownload }) => {
+const DataSources: FC<Props> = ({
+	transactions,
+	onDelete,
+	onDownload,
+	title,
+}) => {
 	return (
 		<div className="card">
 			{/* Header */}
 			<div className="flex items-center justify-between">
 				<div>
-					<h5 className="poppins-semibold">Income Sources</h5>
+					<h5 className="poppins-semibold">{title}</h5>
 					<span className="text-xs text-gray-500">
 						Track your earnings over time and analyze your income trends.
 					</span>
@@ -42,4 +48,4 @@ const IncomeSources: FC<Props> = ({ transactions, onDelete, onDownload }) => {
 	);
 };
 
-export default IncomeSources;
+export default DataSources;

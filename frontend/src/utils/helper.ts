@@ -1,3 +1,4 @@
+import moment from 'moment';
 import { TransactionT } from './types';
 
 export const getInitials = (name: string | undefined) => {
@@ -53,10 +54,22 @@ export const prepareIncomeBarChartData = (data: TransactionT[] | [] = []) => {
 	);
 
 	const charData = sortedData.map((item) => ({
-		month: formatDate(item.date),
+		month: moment(item.date).format('Do MMM'),
 		amount: item.amount,
 		source: item.source,
 	}));
 
+	return charData;
+};
+export const prepareExpenseLineChartData = (data: TransactionT[] | [] = []) => {
+	const sortedData = [...data].sort(
+		(a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()
+	);
+
+	const charData = sortedData.map((item) => ({
+		month: moment(item.date).format('Do MMM'),
+		amount: item.amount,
+		source: item.source,
+	}));
 	return charData;
 };
