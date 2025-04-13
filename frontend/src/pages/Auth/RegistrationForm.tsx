@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import {
 	Form,
 	FormControl,
@@ -21,6 +20,7 @@ import uploadImage from '@/utils/uploadImage';
 import { useContext, useState } from 'react';
 import toast from 'react-hot-toast';
 import { Link, useNavigate } from 'react-router';
+import AuthInput from './AuthInput';
 import ProfilePhotoSelector from './ProfilePhotoSelector';
 
 export interface ImageT {
@@ -46,7 +46,7 @@ const RegistrationForm = () => {
 	const { updateUser } = useContext(UserContext);
 
 	const navigate = useNavigate();
-	let profileImageUrl = '';
+	const profileImageUrl = '';
 	const form = useForm<z.infer<typeof formSchema>>({
 		resolver: zodResolver(formSchema),
 		defaultValues: {
@@ -59,39 +59,41 @@ const RegistrationForm = () => {
 	});
 
 	const onSubmit = async (values: z.infer<typeof formSchema>) => {
-		setError('');
-		try {
-			if (profilePic) {
-				const imgUploadResponse = await uploadImage(profilePic);
-				profileImageUrl = imgUploadResponse.imageUrl || '';
-			}
-			const { fullName, email, password, repeatPassword } = values;
-			if (password !== repeatPassword) {
-				setError("Password didn't match!");
-				return;
-			}
-			const response = await axiosInstance.post(API_PATHS.AUTH.REGISTER, {
-				fullName,
-				email,
-				password,
-				profileImageUrl,
-			});
-			toast.success(`Congratulation, you've successfully registered.`);
-			const { token, user } = response.data;
+		// setError('');
+		// try {
+		// 	if (profilePic) {
+		// 		const imgUploadResponse = await uploadImage(profilePic);
+		// 		profileImageUrl = imgUploadResponse.imageUrl || '';
+		// 	}
+		// 	const { fullName, email, password, repeatPassword } = values;
+		// 	if (password !== repeatPassword) {
+		// 		setError("Password didn't match!");
+		// 		return;
+		// 	}
+		// 	const response = await axiosInstance.post(API_PATHS.AUTH.REGISTER, {
+		// 		fullName,
+		// 		email,
+		// 		password,
+		// 		profileImageUrl,
+		// 	});
+		// 	toast.success(`Congratulation, you've successfully registered.`);
+		// 	const { token, user } = response.data;
 
-			if (token) {
-				localStorage.setItem('token', token);
-				updateUser(user);
-				navigate('/dashboard');
-			}
-		} catch (error: any) {
-			if (error.response && error.response.data.message) {
-				setError(error.response.data.message);
-			} else {
-				setError('Something went wrong. Please try again!');
-			}
-		}
+		// 	if (token) {
+		// 		localStorage.setItem('token', token);
+		// 		updateUser(user);
+		// 		navigate('/dashboard');
+		// 	}
+		// } catch (error: any) {
+		// 	if (error.response && error.response.data.message) {
+		// 		setError(error.response.data.message);
+		// 	} else {
+		// 		setError('Something went wrong. Please try again!');
+		// 	}
+		// }
+		console.log(values);
 	};
+
 	return (
 		<div className="flex flex-col items-center  h-screen w-full gap-10">
 			<div className="flex flex-col gap-4 inter-regular py-4">
@@ -108,92 +110,39 @@ const RegistrationForm = () => {
 						className="space-y-6 w-[400px]"
 					>
 						<ProfilePhotoSelector image={profilePic} setImage={setProfilePic} />
-						<FormField
-							control={form.control}
+
+						<AuthInput
 							name="fullName"
-							render={({ field }) => (
-								<FormItem>
-									<FormLabel className="text-gray-700">Fullname</FormLabel>
-									<FormControl>
-										<Input
-											placeholder="Enter your Fullname.."
-											className="py-5"
-											{...field}
-										/>
-									</FormControl>
-
-									<FormMessage />
-								</FormItem>
-							)}
+							formControl={form.control}
+							label="Fullname"
+							placeholder="Enter your Fullname.."
+							type="text"
 						/>
-						<FormField
-							control={form.control}
+						<AuthInput
 							name="email"
-							render={({ field }) => (
-								<FormItem>
-									<FormLabel className="text-gray-700">Email Address</FormLabel>
-									<FormControl>
-										<Input
-											placeholder="example@email.com"
-											className="py-5"
-											{...field}
-										/>
-									</FormControl>
+							formControl={form.control}
+							label="Email Address"
+							placeholder="example@email.com"
+							type="email"
+						/>
 
-									<FormMessage />
-								</FormItem>
-							)}
-						/>
-						<FormField
-							control={form.control}
+						<AuthInput
 							name="password"
-							render={({ field }) => (
-								<FormItem className="relative">
-									<FormLabel className="text-gray-700">Password</FormLabel>
-									<FormControl>
-										<Input
-											placeholder="Your password.."
-											className="py-5"
-											type="password"
-											{...field}
-										/>
-									</FormControl>
-									<button
-										type="button"
-										className="absolute bottom-3 right-2 cursor-pointer"
-									>
-										<FaRegEye className=" text-gray-700" size={18} />
-									</button>
-									<FormMessage />
-								</FormItem>
-							)}
+							formControl={form.control}
+							label="Password"
+							placeholder="Enter your password..."
+							type="password"
+							showEyeBtn
 						/>
-						<FormField
-							control={form.control}
+						<AuthInput
 							name="repeatPassword"
-							render={({ field }) => (
-								<FormItem className="relative">
-									<FormLabel className="text-gray-600">
-										Repeat Password
-									</FormLabel>
-									<FormControl>
-										<Input
-											placeholder="Your repeat password.."
-											className="py-5"
-											type="password"
-											{...field}
-										/>
-									</FormControl>
-									<button
-										type="button"
-										className="absolute bottom-3 right-2 cursor-pointer"
-									>
-										<FaRegEye className=" text-gray-700" size={18} />
-									</button>
-									<FormMessage />
-								</FormItem>
-							)}
+							formControl={form.control}
+							label="Repeat Password"
+							placeholder="Enter your repeat password..."
+							type="password"
+							showEyeBtn
 						/>
+
 						<Button className="cursor-pointer w-full bg-violet-500 hover:bg-violet-400 duration-200 active:bg-violet-600 py-6">
 							REGISTER
 						</Button>
