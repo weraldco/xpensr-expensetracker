@@ -16,10 +16,7 @@ const IncomeTransactions: FC<Props> = ({ transactions }) => {
 				<h5 className="text-base poppins-semibold text-gray-600">
 					Income Overview
 				</h5>
-				<SeeAllBtn redirectTo="/" />
-				{/* <button className="card-btn">
-					<FaPlus /> Add Income
-				</button> */}
+				<SeeAllBtn redirectTo="/income" />
 			</div>
 
 			<div>

@@ -1,3 +1,4 @@
+/* eslint-disable react-refresh/only-export-components */
 import axiosInstance from '@/utils/axiosInstance';
 import { UserContextType, UserType, ValuesT } from '@/utils/types';
 import { createContext, FC, ReactNode, useState } from 'react';

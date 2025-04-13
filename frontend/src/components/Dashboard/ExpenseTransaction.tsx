@@ -15,7 +15,7 @@ const ExpenseTransaction: FC<Props> = ({ transactions }) => {
 		<div className="card poppins-regular">
 			<div className="flex justify-between items-center">
 				<h5 className="text-base poppins-semibold text-gray-600">Expenses</h5>
-				<SeeAllBtn redirectTo={'/'} />
+				<SeeAllBtn redirectTo={'/expenses'} />
 			</div>
 
 			<div>

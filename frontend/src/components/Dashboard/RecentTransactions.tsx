@@ -5,9 +5,7 @@ import TransactionItem from '../TransactionItem';
 interface TransactionType {
 	transactions: TransactionT[];
 }
-const handleClick = () => {
-	console.log('click');
-};
+
 const RecentTransactions = ({ transactions }: TransactionType) => {
 	return (
 		<div className="card flex flex-col gap-4 w-full">
@@ -17,7 +15,7 @@ const RecentTransactions = ({ transactions }: TransactionType) => {
 			</div>
 			<div className="flex flex-col ">
 				{transactions?.map((data, i) => (
-					<TransactionItem data={data} key={i} onClick={handleClick} />
+					<TransactionItem data={data} key={i} />
 				))}
 			</div>
 		</div>

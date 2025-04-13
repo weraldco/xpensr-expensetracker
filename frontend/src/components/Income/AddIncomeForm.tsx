@@ -32,7 +32,6 @@ const formSchema = z.object({
 });
 
 interface Props {
-	// setModalClose: () => void;
 	onAddIncome: (values: ValuesT) => void;
 }
 
