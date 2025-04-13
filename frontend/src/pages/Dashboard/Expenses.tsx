@@ -1,5 +1,3 @@
-import CustomLineChart from '@/components/Charts/CustomLineChart';
-import { ChartDataT } from '@/components/Dashboard/Last30DaysExpensesChart';
 import DataOverviews from '@/components/DataOverviews';
 import DataSources from '@/components/DataSources';
 import DeleteAlert from '@/components/DeleteAlert';
@@ -20,6 +18,7 @@ const Expenses = () => {
 		openDeleteAlert,
 		setOpenDeleteAlert,
 		handleDelete,
+		downloadDataSummary,
 	} = useContext(UserContext);
 
 	const [expenseData, setExpenseData] = useState<TransactionT[] | []>([]);
@@ -42,8 +41,6 @@ const Expenses = () => {
 			setLoading(false);
 		}
 	};
-
-	const handleDownloadExpensesDetails = () => {};
 	useEffect(() => {
 		fetchExpenseData();
 
@@ -67,7 +64,12 @@ const Expenses = () => {
 						onDelete={(id) => {
 							setOpenDeleteAlert({ show: true, data: id });
 						}}
-						onDownload={handleDownloadExpensesDetails}
+						onDownload={() =>
+							downloadDataSummary(
+								API_PATHS.INCOME.DOWNLOAD_INCOME,
+								'expense_full_data'
+							)
+						}
 					/>
 				</div>
 				<Modal

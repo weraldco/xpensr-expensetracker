@@ -13,8 +13,8 @@ interface Props {
 const DataSources: FC<Props> = ({
 	transactions,
 	onDelete,
-	onDownload,
 	title,
+	onDownload,
 }) => {
 	return (
 		<div className="card">
@@ -26,7 +26,7 @@ const DataSources: FC<Props> = ({
 						Track your earnings over time and analyze your income trends.
 					</span>
 				</div>
-				<button className="card-btn">
+				<button className="card-btn" onClick={onDownload}>
 					<LuDownload size={18} />
 					Download
 				</button>
@@ -39,7 +39,6 @@ const DataSources: FC<Props> = ({
 							data={transaction}
 							key={index}
 							optType="income"
-							btnDeleteShow
 							onClick={onDelete}
 						/>
 					))}

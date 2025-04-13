@@ -17,6 +17,7 @@ export type UserContextType = {
 	setOpenDeleteAlert: Dispatch<
 		SetStateAction<{ show: boolean; data: string | '' }>
 	>;
+	downloadDataSummary: (path: string, fileName: string) => void;
 };
 
 export type UserType = {

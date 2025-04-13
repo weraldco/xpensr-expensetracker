@@ -17,6 +17,7 @@ const defaultValue: UserContextType = {
 	setOpenAddModal: () => {},
 	openDeleteAlert: { show: false, data: '' },
 	setOpenDeleteAlert: () => {},
+	downloadDataSummary: () => {},
 };
 
 export const UserContext = createContext<UserContextType>(defaultValue);
@@ -38,19 +39,7 @@ const UserProvider: FC<Props> = ({ children }) => {
 	const clearUser = () => {
 		setUser(null);
 	};
-	// const fetchDataByPath = async (
-	// 	path: string
-	// ): Promise<TransactionT[] | null> => {
-	// 	try {
-	// 		const response = await axiosInstance.get(path);
-	// 		// API_PATHS.INCOME.GET_ALL_INCOME
-	// 		const data: TransactionT[] = await response.data;
-	// 		return data;
-	// 	} catch (error) {
-	// 		console.log('Error fetching data', error);
-	// 		return null;
-	// 	}
-	// };
+
 	const handleAdd = async (
 		values: ValuesT,
 		fetchData: () => Promise<void>,
@@ -76,6 +65,24 @@ const UserProvider: FC<Props> = ({ children }) => {
 			console.error('Something went wrong, try again!', error);
 		}
 	};
+
+	const downloadDataSummary = async (path: string, fileName: string) => {
+		try {
+			const response = await axiosInstance.get(path, { responseType: 'blob' });
+
+			// Creating url
+			const url = window.URL.createObjectURL(new Blob([response.data]));
+			const link = document.createElement('a');
+			link.href = url;
+			link.setAttribute('download', `${fileName}.xlsx`);
+			document.body.appendChild(link);
+			link.click();
+			link.parentNode?.removeChild(link);
+			window.URL.revokeObjectURL(url);
+		} catch (error) {
+			console.error('Error downloading details', error);
+		}
+	};
 	const value = {
 		user,
 		updateUser,
@@ -86,6 +93,7 @@ const UserProvider: FC<Props> = ({ children }) => {
 		setOpenAddModal,
 		openDeleteAlert,
 		setOpenDeleteAlert,
+		downloadDataSummary,
 	};
 	return (
 		<div>

@@ -182,7 +182,9 @@
 	.inactive {
 		@apply bg-white text-gray-700 hover:bg-violet-200 hover:text-violet-500;
 	}
-
+	.transaction-card {
+		@apply text-xs font-bold flex items-center gap-2 p-2 rounded-md;
+	}
 	.expense {
 		@apply text-red-400 bg-red-100;
 	}

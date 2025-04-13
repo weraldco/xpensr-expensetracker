@@ -20,7 +20,7 @@ export const API_PATHS = {
 	EXPENSE: {
 		ADD_EXPENSE: `${API_ROOT}/expense/add`,
 		GET_ALL_EXPENSE: `${API_ROOT}/expense/get`,
-		DELETE_EXPENSE: (expenseId: string) => `${API_ROOT}/income/${expenseId}`,
+		DELETE_EXPENSE: (expenseId: string) => `${API_ROOT}/expense/${expenseId}`,
 		DOWNLOAD_EXPENSE: `${API_ROOT}/expense/downloadexcel`,
 	},
 

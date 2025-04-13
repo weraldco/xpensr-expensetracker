@@ -18,6 +18,7 @@ const Income = () => {
 		openDeleteAlert,
 		setOpenDeleteAlert,
 		handleDelete,
+		downloadDataSummary,
 	} = useContext(UserContext);
 
 	const [incomeData, setIncomeData] = useState<TransactionT[] | []>([]);
@@ -41,7 +42,6 @@ const Income = () => {
 		}
 	};
 
-	const handleDownloadIncomeDetails = () => {};
 	useEffect(() => {
 		fetchIncomeData();
 
@@ -66,7 +66,12 @@ const Income = () => {
 						onDelete={(id) => {
 							setOpenDeleteAlert({ show: true, data: id });
 						}}
-						onDownload={handleDownloadIncomeDetails}
+						onDownload={() =>
+							downloadDataSummary(
+								API_PATHS.INCOME.DOWNLOAD_INCOME,
+								'income_full_data'
+							)
+						}
 					/>
 				</div>
 				<Modal

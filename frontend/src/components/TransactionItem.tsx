@@ -4,29 +4,14 @@ import { FC } from 'react';
 import { FaArrowTrendDown, FaArrowTrendUp } from 'react-icons/fa6';
 import { MdOutlineDelete, MdOutlineShoppingCart } from 'react-icons/md';
 
-// interface DataT {
-// 	_id: string | undefined;
-// 	amount: number;
-// 	category?: string;
-// 	source?: string;
-// 	date: Date;
-// 	icon?: string;
-// 	type: string;
-// }
-
 interface Props {
 	data: TransactionT;
 	optType?: string;
-	btnDeleteShow?: boolean;
-	onClick: (id: string) => void;
+	onClick?: (id: string) => void;
 }
 
-const TransactionItem: FC<Props> = ({
-	data,
-	optType,
-	btnDeleteShow,
-	onClick,
-}) => {
+const TransactionItem: FC<Props> = ({ data, optType, onClick }) => {
+	const type = data.type === undefined ? optType : data.type;
 	return (
 		<div className="group flex items-center justify-between text-[0.85em] hover:bg-gray-50 p-2 duration-200">
 			<div className="flex gap-4 items-center">
@@ -47,18 +32,33 @@ const TransactionItem: FC<Props> = ({
 				</div>
 			</div>
 			<div className="group flex gap-2 duration-200">
-				{btnDeleteShow && (
+				{onClick && (
 					<button
 						className="group-hover:block hidden duration-200 cursor-pointer"
-						onClick={() => onClick(data._id as string)}
+						onClick={() => {
+							// console.log(data._id);
+							onClick(data._id as string);
+						}}
 					>
 						<MdOutlineDelete
 							size={20}
-							className="text-gray-400 hover:text-violet-500 active:text-violet-800"
+							className="text-gray-400 hover:text-red-500 active:text-red-800"
 						/>
 					</button>
 				)}
-				<div
+				{type === 'expense' ? (
+					<div className="transaction-card bg-red-100 text-red-400">
+						{formatAmount(data.amount)}
+						<FaArrowTrendDown size={18} />
+					</div>
+				) : (
+					<div className="transaction-card bg-green-100 text-green-400">
+						{formatAmount(data.amount)}
+						<FaArrowTrendUp size={18} />
+					</div>
+				)}
+
+				{/* <div
 					className={`${
 						data.type || optType
 					} text-xs font-bold flex items-center gap-2 p-2 rounded-md`}
@@ -71,7 +71,7 @@ const TransactionItem: FC<Props> = ({
 					) : (
 						<FaArrowTrendUp size={18} />
 					)}
-				</div>
+				</div> */}
 			</div>
 		</div>
 	);

@@ -1,8 +1,8 @@
 import { FC, useEffect, useState } from 'react';
-import CustomPieChart, { DataT } from '../Charts/CustomPieChart';
+import CustomPieChart from '../Charts/CustomPieChart';
 import { ChartDataT } from './Last30DaysExpensesChart';
 
-const COLORS = ['#8e51ff', '#de5454', '#f78907'];
+const COLORS = ['#8e51ff', '#de5454', '#f78907', '#4B097B', '#FA1ABE'];
 
 interface Props {
 	data: ChartDataT[];

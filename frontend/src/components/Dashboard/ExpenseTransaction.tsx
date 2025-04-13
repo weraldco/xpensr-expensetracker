@@ -10,6 +10,7 @@ interface Props {
 const ExpenseTransaction: FC<Props> = ({ transactions }) => {
 	const { total, transaction } = transactions;
 	console.log(total);
+
 	return (
 		<div className="card poppins-regular">
 			<div className="flex justify-between items-center">

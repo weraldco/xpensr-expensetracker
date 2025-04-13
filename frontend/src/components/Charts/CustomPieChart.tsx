@@ -45,10 +45,7 @@ const CustomPieChart: FC<Props> = ({
 				>
 					{data !== undefined &&
 						data.map((_, index) => (
-							<Cell
-								key={`cell-${index}`}
-								fill={colors[index & colors.length]}
-							/>
+							<Cell key={`cell-${index}`} fill={colors[index]} />
 						))}
 				</Pie>
 				<Tooltip content={<CustomTooltip />} />
