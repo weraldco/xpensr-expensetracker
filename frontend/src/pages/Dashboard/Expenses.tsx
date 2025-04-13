@@ -4,6 +4,7 @@ import DataSources from '@/components/DataSources';
 import DeleteAlert from '@/components/DeleteAlert';
 import AddExpenseForm from '@/components/Expense/AddExpenseForm';
 import DashboardLayout from '@/components/layout/DashboardLayout';
+import LoadingState from '@/components/LoadingState';
 import Modal from '@/components/Modal';
 import { UserContext } from '@/context/userContext';
 import { API_PATHS } from '@/utils/apiPaths';
@@ -49,61 +50,65 @@ const Expenses = () => {
 	}, []);
 	return (
 		<DashboardLayout activeMenu="Expenses">
-			<div className="my-5 mx-auto">
-				<div className="flex flex-col gap-4">
-					<DataOverviews
-						chartType="linechart"
-						subtitle="Track your expenses over time and analyze your expense trend."
-						title="Expenses Overviews"
-						transactions={expenseData}
-						onAdd={() => setOpenAddModal(true)}
-						btnLabel="Add Expenses"
-					/>
-					<DataSources
-						title="Expense Sources"
-						transactions={expenseData}
-						onDelete={(id) => {
-							setOpenDeleteAlert({ show: true, data: id });
-						}}
-						onDownload={() =>
-							downloadDataSummary(
-								API_PATHS.INCOME.DOWNLOAD_INCOME,
-								'expense_full_data'
-							)
-						}
-					/>
+			{expenseData ? (
+				<div className="my-5 mx-auto">
+					<div className="flex flex-col gap-4">
+						<DataOverviews
+							chartType="linechart"
+							subtitle="Track your expenses over time and analyze your expense trend."
+							title="Expenses Overviews"
+							transactions={expenseData}
+							onAdd={() => setOpenAddModal(true)}
+							btnLabel="Add Expenses"
+						/>
+						<DataSources
+							title="Expense Sources"
+							transactions={expenseData}
+							onDelete={(id) => {
+								setOpenDeleteAlert({ show: true, data: id });
+							}}
+							onDownload={() =>
+								downloadDataSummary(
+									API_PATHS.INCOME.DOWNLOAD_INCOME,
+									'expense_full_data'
+								)
+							}
+						/>
+					</div>
+					<Modal
+						isOpen={openAddModal}
+						onClose={() => setOpenAddModal(false)}
+						title="Add Expenses"
+					>
+						<AddExpenseForm
+							onAdd={(values) => {
+								handleAdd(
+									values,
+									fetchExpenseData,
+									API_PATHS.EXPENSE.ADD_EXPENSE
+								);
+							}}
+						/>
+					</Modal>
+					<Modal
+						isOpen={openDeleteAlert.show}
+						onClose={() => setOpenDeleteAlert({ show: false, data: '' })}
+						title="Deleting Income"
+					>
+						<DeleteAlert
+							content="Are you sure you want to delete this income?"
+							onDelete={() =>
+								handleDelete(
+									fetchExpenseData,
+									API_PATHS.EXPENSE.DELETE_EXPENSE(openDeleteAlert.data)
+								)
+							}
+						/>
+					</Modal>
 				</div>
-				<Modal
-					isOpen={openAddModal}
-					onClose={() => setOpenAddModal(false)}
-					title="Add Expenses"
-				>
-					<AddExpenseForm
-						onAdd={(values) => {
-							handleAdd(
-								values,
-								fetchExpenseData,
-								API_PATHS.EXPENSE.ADD_EXPENSE
-							);
-						}}
-					/>
-				</Modal>
-				<Modal
-					isOpen={openDeleteAlert.show}
-					onClose={() => setOpenDeleteAlert({ show: false, data: '' })}
-					title="Deleting Income"
-				>
-					<DeleteAlert
-						content="Are you sure you want to delete this income?"
-						onDelete={() =>
-							handleDelete(
-								fetchExpenseData,
-								API_PATHS.EXPENSE.DELETE_EXPENSE(openDeleteAlert.data)
-							)
-						}
-					/>
-				</Modal>
-			</div>
+			) : (
+				<LoadingState></LoadingState>
+			)}
 		</DashboardLayout>
 	);
 };

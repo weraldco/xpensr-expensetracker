@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { last60DaysIncomeT } from '@/utils/types';
 import { FC } from 'react';
 import SeeAllBtn from '../SeeAllBtn';
@@ -9,7 +8,7 @@ interface Props {
 }
 
 const IncomeTransactions: FC<Props> = ({ transactions }) => {
-	const { total, transaction } = transactions;
+	const { transaction } = transactions;
 	return (
 		<div className="card poppins-regular">
 			<div className="flex justify-between items-center">

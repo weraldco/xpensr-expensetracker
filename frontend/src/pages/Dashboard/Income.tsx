@@ -4,6 +4,7 @@ import DataSources from '@/components/DataSources';
 import DeleteAlert from '@/components/DeleteAlert';
 import AddIncomeForm from '@/components/Income/AddIncomeForm';
 import DashboardLayout from '@/components/layout/DashboardLayout';
+import LoadingState from '@/components/LoadingState';
 import Modal from '@/components/Modal';
 import { UserContext } from '@/context/userContext';
 import { API_PATHS } from '@/utils/apiPaths';
@@ -50,58 +51,62 @@ const Income = () => {
 	}, []);
 	return (
 		<DashboardLayout activeMenu="Income">
-			<div className="my-5 mx-auto">
-				<div className="flex flex-col gap-4">
-					<DataOverviews
-						chartType="barchart"
-						subtitle="
+			{incomeData ? (
+				<div className="my-5 mx-auto">
+					<div className="flex flex-col gap-4">
+						<DataOverviews
+							chartType="barchart"
+							subtitle="
 						Track your earnings over time and analyze your income trends."
-						title="Income Overviews"
-						transactions={incomeData}
-						onAdd={() => setOpenAddModal(true)}
-						btnLabel="Add Income"
-					/>
-					<DataSources
-						title="Income Sources"
-						transactions={incomeData}
-						onDelete={(id) => {
-							setOpenDeleteAlert({ show: true, data: id });
-						}}
-						onDownload={() =>
-							downloadDataSummary(
-								API_PATHS.INCOME.DOWNLOAD_INCOME,
-								'income_full_data'
-							)
-						}
-					/>
+							title="Income Overviews"
+							transactions={incomeData}
+							onAdd={() => setOpenAddModal(true)}
+							btnLabel="Add Income"
+						/>
+						<DataSources
+							title="Income Sources"
+							transactions={incomeData}
+							onDelete={(id) => {
+								setOpenDeleteAlert({ show: true, data: id });
+							}}
+							onDownload={() =>
+								downloadDataSummary(
+									API_PATHS.INCOME.DOWNLOAD_INCOME,
+									'income_full_data'
+								)
+							}
+						/>
+					</div>
+					<Modal
+						isOpen={openAddModal}
+						onClose={() => setOpenAddModal(false)}
+						title="Add Income"
+					>
+						<AddIncomeForm
+							onAddIncome={(values) => {
+								handleAdd(values, fetchIncomeData, API_PATHS.INCOME.ADD_INCOME);
+							}}
+						/>
+					</Modal>
+					<Modal
+						isOpen={openDeleteAlert.show}
+						onClose={() => setOpenDeleteAlert({ show: false, data: '' })}
+						title="Deleting Income"
+					>
+						<DeleteAlert
+							content="Are you sure you want to delete this income?"
+							onDelete={() =>
+								handleDelete(
+									fetchIncomeData,
+									API_PATHS.INCOME.DELETE_INCOME(openDeleteAlert.data)
+								)
+							}
+						/>
+					</Modal>
 				</div>
-				<Modal
-					isOpen={openAddModal}
-					onClose={() => setOpenAddModal(false)}
-					title="Add Income"
-				>
-					<AddIncomeForm
-						onAddIncome={(values) => {
-							handleAdd(values, fetchIncomeData, API_PATHS.INCOME.ADD_INCOME);
-						}}
-					/>
-				</Modal>
-				<Modal
-					isOpen={openDeleteAlert.show}
-					onClose={() => setOpenDeleteAlert({ show: false, data: '' })}
-					title="Deleting Income"
-				>
-					<DeleteAlert
-						content="Are you sure you want to delete this income?"
-						onDelete={() =>
-							handleDelete(
-								fetchIncomeData,
-								API_PATHS.INCOME.DELETE_INCOME(openDeleteAlert.data)
-							)
-						}
-					/>
-				</Modal>
-			</div>
+			) : (
+				<LoadingState></LoadingState>
+			)}
 		</DashboardLayout>
 	);
 };

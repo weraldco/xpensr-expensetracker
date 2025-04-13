@@ -1,21 +1,27 @@
+import React, { Suspense } from 'react';
 import { Navigate, Route, Routes } from 'react-router';
-import LoginForm from './pages/Auth/LoginForm';
-import RegistrationForm from './pages/Auth/RegistrationForm';
-import Expenses from './pages/Dashboard/Expenses';
-import Home from './pages/Dashboard/Home';
-import Income from './pages/Dashboard/Income';
+import LoadingState from './components/LoadingState';
+const Home = React.lazy(() => import('./pages/Dashboard/Home'));
+const Income = React.lazy(() => import('./pages/Dashboard/Income'));
+const Expenses = React.lazy(() => import('./pages/Dashboard/Expenses'));
+const RegistrationForm = React.lazy(
+	() => import('./pages/Auth/RegistrationForm')
+);
+const LoginForm = React.lazy(() => import('./pages/Auth/LoginForm'));
 
 function App() {
 	return (
 		<div className="flex flex-col">
-			<Routes>
-				<Route path="/" element={<Root />} />
-				<Route path="/login" element={<LoginForm />} />
-				<Route path="/registration" element={<RegistrationForm />} />
-				<Route path="/dashboard" element={<Home />} />
-				<Route path="/expenses" element={<Expenses />} />
-				<Route path="/income" element={<Income />} />
-			</Routes>
+			<Suspense fallback={<LoadingState />}>
+				<Routes>
+					<Route path="/" element={<Root />} />
+					<Route path="/login" Component={LoginForm} />
+					<Route path="/registration" Component={RegistrationForm} />
+					<Route path="/dashboard" Component={Home} />
+					<Route path="/expenses" Component={Expenses} />
+					<Route path="/income" Component={Income} />
+				</Routes>
+			</Suspense>
 		</div>
 	);
 }
