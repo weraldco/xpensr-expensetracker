@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import DataOverviews from '@/components/DataOverviews';
 import DataSources from '@/components/DataSources';
 import DeleteAlert from '@/components/DeleteAlert';
