@@ -1,3 +1,5 @@
+import CustomLineChart from '@/components/Charts/CustomLineChart';
+import { ChartDataT } from '@/components/Dashboard/Last30DaysExpensesChart';
 import DataOverviews from '@/components/DataOverviews';
 import DataSources from '@/components/DataSources';
 import DeleteAlert from '@/components/DeleteAlert';
@@ -47,7 +49,6 @@ const Expenses = () => {
 
 		return () => {};
 	}, []);
-	console.log('ex', expenseData);
 	return (
 		<DashboardLayout activeMenu="Expenses">
 			<div className="my-5 mx-auto">

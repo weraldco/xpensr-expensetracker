@@ -48,7 +48,7 @@ export const prepareExpenseBarChartData = (data: TransactionT[] | [] = []) => {
 	return chartData;
 };
 
-export const prepareIncomeBarChartData = (data: TransactionT[] | [] = []) => {
+export const prepareChartData = (data: TransactionT[] | [] = []) => {
 	const sortedData = [...data].sort(
 		(a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()
 	);
@@ -61,6 +61,7 @@ export const prepareIncomeBarChartData = (data: TransactionT[] | [] = []) => {
 
 	return charData;
 };
+
 export const prepareExpenseLineChartData = (data: TransactionT[] | [] = []) => {
 	const sortedData = [...data].sort(
 		(a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()

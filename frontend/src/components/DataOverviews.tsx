@@ -1,7 +1,4 @@
-import {
-	prepareExpenseLineChartData,
-	prepareIncomeBarChartData,
-} from '@/utils/helper';
+import { prepareChartData } from '@/utils/helper';
 import { TransactionT } from '@/utils/types';
 import { FC, useEffect, useState } from 'react';
 import { FaPlus } from 'react-icons/fa';
@@ -28,14 +25,8 @@ const DataOverviews: FC<Props> = ({
 	const [chartData, setChartData] = useState<ChartDataT[] | []>([]);
 
 	useEffect(() => {
-		let result;
-		if (chartType === 'barchart') {
-			result = prepareIncomeBarChartData(transactions);
-		} else if (chartType === 'linechart') {
-			result = prepareExpenseLineChartData(transactions);
-		} else {
-			result = prepareExpenseLineChartData(transactions);
-		}
+		const result = prepareChartData(transactions);
+
 		setChartData(result);
 
 		return () => {};
@@ -57,7 +48,8 @@ const DataOverviews: FC<Props> = ({
 				</button>
 			</div>
 			<div className="mt-10">
-				<CustomLineChart data={chartData} />
+				{chartType === 'linechart' && <CustomLineChart data={chartData} />}
+				{chartType === 'barchart' && <CustomBarChart data={chartData} />}
 			</div>
 		</div>
 	);

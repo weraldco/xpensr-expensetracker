@@ -52,6 +52,7 @@ const Income = () => {
 			<div className="my-5 mx-auto">
 				<div className="flex flex-col gap-4">
 					<DataOverviews
+						chartType="barchart"
 						subtitle="
 						Track your earnings over time and analyze your income trends."
 						title="Income Overviews"
