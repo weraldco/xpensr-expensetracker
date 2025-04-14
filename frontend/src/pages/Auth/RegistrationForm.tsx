@@ -1,18 +1,10 @@
-import {
-	Form,
-	FormControl,
-	FormField,
-	FormItem,
-	FormLabel,
-	FormMessage,
-} from '@/components/ui/form';
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { Form } from '@/components/ui/form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
-import { FaRegEye } from 'react-icons/fa6';
 import { z } from 'zod';
 
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
 import { UserContext } from '@/context/userContext';
 import { API_PATHS } from '@/utils/apiPaths';
 import axiosInstance from '@/utils/axiosInstance';
@@ -46,7 +38,7 @@ const RegistrationForm = () => {
 	const { updateUser } = useContext(UserContext);
 
 	const navigate = useNavigate();
-	const profileImageUrl = '';
+	let profileImageUrl = '';
 	const form = useForm<z.infer<typeof formSchema>>({
 		resolver: zodResolver(formSchema),
 		defaultValues: {
@@ -59,39 +51,38 @@ const RegistrationForm = () => {
 	});
 
 	const onSubmit = async (values: z.infer<typeof formSchema>) => {
-		// setError('');
-		// try {
-		// 	if (profilePic) {
-		// 		const imgUploadResponse = await uploadImage(profilePic);
-		// 		profileImageUrl = imgUploadResponse.imageUrl || '';
-		// 	}
-		// 	const { fullName, email, password, repeatPassword } = values;
-		// 	if (password !== repeatPassword) {
-		// 		setError("Password didn't match!");
-		// 		return;
-		// 	}
-		// 	const response = await axiosInstance.post(API_PATHS.AUTH.REGISTER, {
-		// 		fullName,
-		// 		email,
-		// 		password,
-		// 		profileImageUrl,
-		// 	});
-		// 	toast.success(`Congratulation, you've successfully registered.`);
-		// 	const { token, user } = response.data;
+		setError('');
+		try {
+			if (profilePic) {
+				const imgUploadResponse = await uploadImage(profilePic);
+				profileImageUrl = imgUploadResponse.imageUrl || '';
+			}
+			const { fullName, email, password, repeatPassword } = values;
+			if (password !== repeatPassword) {
+				setError("Password didn't match!");
+				return;
+			}
+			const response = await axiosInstance.post(API_PATHS.AUTH.REGISTER, {
+				fullName,
+				email,
+				password,
+				profileImageUrl,
+			});
+			toast.success(`Congratulation, you've successfully registered.`);
+			const { token, user } = response.data;
 
-		// 	if (token) {
-		// 		localStorage.setItem('token', token);
-		// 		updateUser(user);
-		// 		navigate('/dashboard');
-		// 	}
-		// } catch (error: any) {
-		// 	if (error.response && error.response.data.message) {
-		// 		setError(error.response.data.message);
-		// 	} else {
-		// 		setError('Something went wrong. Please try again!');
-		// 	}
-		// }
-		console.log(values);
+			if (token) {
+				localStorage.setItem('token', token);
+				updateUser(user);
+				navigate('/dashboard');
+			}
+		} catch (error: any) {
+			if (error.response && error.response.data.message) {
+				setError(error.response.data.message);
+			} else {
+				setError('Something went wrong. Please try again!');
+			}
+		}
 	};
 
 	return (
