@@ -5,10 +5,10 @@
 	"type": "module",
 	"scripts": {
 		"dev": "vite",
+		"prebuild": "npm install --force",
 		"build": "tsc -b && vite build",
 		"lint": "eslint .",
-		"preview": "vite preview",
-		"postinstall": "npm install --force"
+		"preview": "vite preview"
 	},
 	"dependencies": {
 		"@hookform/resolvers": "^4.1.3",

@@ -4,5 +4,12 @@
 			"source": "/(.*)",
 			"destination": "/index.html"
 		}
-	]
+	],
+	"builds": [
+		{
+			"src": "package.json",
+			"use": "@vercel/node"
+		}
+	],
+	"buildCommand": "npm install --force && npm run build"
 }
