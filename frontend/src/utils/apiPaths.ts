@@ -1,5 +1,3 @@
-export const BASE_URL = 'http://localhost:8000';
-
 const API_ROOT = '/api/v1';
 //  utils/apiPaths.js
 export const API_PATHS = {

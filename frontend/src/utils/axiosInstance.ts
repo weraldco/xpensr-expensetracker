@@ -1,5 +1,7 @@
 import axios from 'axios';
-import { BASE_URL } from './apiPaths';
+// import { BASE_URL } from './apiPaths';
+
+const BASE_URL = import.meta.env.VITE_REACT_APP_BACKEND_BASEURL;
 
 const axiosInstance = axios.create({
 	baseURL: BASE_URL,
