@@ -36,7 +36,6 @@ const TransactionItem: FC<Props> = ({ data, optType, onClick }) => {
 					<button
 						className="group-hover:block hidden duration-200 cursor-pointer"
 						onClick={() => {
-							// console.log(data._id);
 							onClick(data._id as string);
 						}}
 					>

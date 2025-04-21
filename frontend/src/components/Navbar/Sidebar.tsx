@@ -25,7 +25,7 @@ const Sidebar = ({
 	};
 	return (
 		<div
-			className={`top-[105px] bottom-0 left-0 border-r w-[200px] sticky h-[calc(100vh-105px)] z-30 bg-white ${className}`}
+			className={`top-[115px] bottom-0 left-0 border-r w-[200px] sticky h-[calc(100vh-115px)] z-30 bg-white ${className}`}
 		>
 			{/* User info */}
 			<div className=" flex flex-col justify-center items-center text-[0.95em] font-bold h-[150px] gap-4 ">

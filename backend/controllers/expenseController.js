@@ -27,7 +27,6 @@ exports.addExpense = async (req, res) => {
 // Get All Expense
 exports.getAllExpense = async (req, res) => {
 	const userId = req.user.id;
-	console.log(userId);
 
 	try {
 		const expense = await Expense.find({ userId }).sort({ date: -1 });

@@ -65,7 +65,15 @@ const LoginForm = () => {
 	};
 	return (
 		<div className="flex flex-col items-center  h-screen w-full gap-10 ">
-			<div className="flex flex-col gap-4 inter-regular py-10">
+			<div className="flex flex-col gap-6 inter-regular py-10">
+				<div className="bg-gray flex flex-col gap-3 py-1 items-center">
+					<h1 className="cherry-bomb-one-regular text-7xl text-violet-500">
+						xpensr
+					</h1>
+					<span className="text-gray-400 text-base">
+						Track your Expense and Income
+					</span>
+				</div>
 				<div className="flex flex-col">
 					<div className="inter-medium text-xl">Welcome back</div>
 					<div className="text-xs text-gray-400">

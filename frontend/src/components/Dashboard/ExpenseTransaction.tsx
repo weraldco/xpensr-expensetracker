@@ -8,8 +8,7 @@ interface Props {
 }
 
 const ExpenseTransaction: FC<Props> = ({ transactions }) => {
-	const { total, transaction } = transactions;
-	console.log(total);
+	const { transaction } = transactions;
 
 	return (
 		<div className="card poppins-regular">

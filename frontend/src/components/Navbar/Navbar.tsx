@@ -17,8 +17,8 @@ const Navbar: FC<Props> = ({ activeMenu }) => {
 				{openSideMenu ? <IoMdClose size={24} /> : <IoIosMenu size={24} />}
 			</button>
 			<div className="sticky top-0  bg-gray flex flex-col gap-2 py-1 ">
-				<h1 className="cherry-bomb-one-regular text-4xl text-violet-500">
-					xpensee
+				<h1 className="cherry-bomb-one-regular text-5xl text-violet-500">
+					xpensr
 				</h1>
 				<span className="text-gray-400 text-xs">
 					Track your Expense and Income
