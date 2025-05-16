@@ -77,7 +77,7 @@ const LoginForm = () => {
 				<div className="flex flex-col">
 					<div className="inter-medium text-xl">Welcome back</div>
 					<div className="text-xs text-gray-400">
-						Please enter your details to enter.
+						Login to access your dashboard.
 					</div>
 					{error && <div className="text-red-400 text-sm">{error}</div>}
 				</div>

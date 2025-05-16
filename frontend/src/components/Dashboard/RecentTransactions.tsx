@@ -15,7 +15,7 @@ const RecentTransactions = ({ transactions }: TransactionType) => {
 			</div>
 			<div className="flex flex-col ">
 				{transactions?.map((data, i) => (
-					<TransactionItem data={data} key={i} />
+					<TransactionItem data={data} key={i} optType={data.type} />
 				))}
 			</div>
 		</div>

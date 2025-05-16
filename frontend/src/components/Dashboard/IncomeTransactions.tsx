@@ -12,9 +12,7 @@ const IncomeTransactions: FC<Props> = ({ transactions }) => {
 	return (
 		<div className="card poppins-regular">
 			<div className="flex justify-between items-center">
-				<h5 className="text-base poppins-semibold text-gray-600">
-					Income Overview
-				</h5>
+				<h5 className="text-base poppins-semibold text-gray-600">Income</h5>
 				<SeeAllBtn redirectTo="/income" />
 			</div>
 

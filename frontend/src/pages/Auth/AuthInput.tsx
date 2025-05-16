@@ -45,7 +45,6 @@ const AuthInput: FC<Props> = ({
 			setInputType('text');
 		}
 	};
-	console.log(inputType);
 	return (
 		<FormField
 			control={formControl}

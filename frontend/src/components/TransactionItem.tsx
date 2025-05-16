@@ -11,7 +11,6 @@ interface Props {
 }
 
 const TransactionItem: FC<Props> = ({ data, optType, onClick }) => {
-	const type = data.type === undefined ? optType : data.type;
 	return (
 		<div className="group flex items-center justify-between text-[0.85em] hover:bg-gray-50 p-2 duration-200">
 			<div className="flex gap-4 items-center">
@@ -45,7 +44,7 @@ const TransactionItem: FC<Props> = ({ data, optType, onClick }) => {
 						/>
 					</button>
 				)}
-				{type === 'expense' ? (
+				{optType === 'expense' ? (
 					<div className="transaction-card bg-red-100 text-red-400">
 						{formatAmount(data.amount)}
 						<FaArrowTrendDown size={18} />

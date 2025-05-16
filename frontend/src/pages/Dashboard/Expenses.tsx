@@ -55,15 +55,17 @@ const Expenses = () => {
 					<div className="flex flex-col gap-4">
 						<DataOverviews
 							chartType="linechart"
-							subtitle="Track your expenses over time and analyze your expense trend."
-							title="Expenses Overviews"
+							subtitle="Track your expenses over time and analyze your expense trend by chart."
+							title="Expenses Overview"
 							transactions={expenseData}
 							onAdd={() => setOpenAddModal(true)}
 							btnLabel="Add Expenses"
 						/>
 						<DataSources
 							title="Expense Sources"
+							subHeading="Show all your expenses, the date and where you spend your money."
 							transactions={expenseData}
+							optType="expense"
 							onDelete={(id) => {
 								setOpenDeleteAlert({ show: true, data: id });
 							}}
@@ -96,7 +98,7 @@ const Expenses = () => {
 						title="Deleting Income"
 					>
 						<DeleteAlert
-							content="Are you sure you want to delete this income?"
+							content="Are you sure you want to delete this expense item?"
 							onDelete={() =>
 								handleDelete(
 									fetchExpenseData,

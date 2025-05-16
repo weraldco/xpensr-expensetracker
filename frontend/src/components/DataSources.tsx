@@ -5,16 +5,20 @@ import TransactionItem from './TransactionItem';
 
 interface Props {
 	transactions: TransactionT[] | null;
+	subHeading?: string;
 	onDelete: (id: string) => void;
 	onDownload: () => void;
 	title: string;
+	optType?: string;
 }
 
 const DataSources: FC<Props> = ({
 	transactions,
+	subHeading,
 	onDelete,
 	title,
 	onDownload,
+	optType,
 }) => {
 	return (
 		<div className="card">
@@ -22,9 +26,7 @@ const DataSources: FC<Props> = ({
 			<div className="flex items-center justify-between">
 				<div>
 					<h5 className="poppins-semibold">{title}</h5>
-					<span className="text-xs text-gray-500">
-						Track your earnings over time and analyze your income trends.
-					</span>
+					<span className="text-xs text-gray-500">{subHeading}</span>
 				</div>
 				<button className="card-btn" onClick={onDownload}>
 					<LuDownload size={18} />
@@ -38,7 +40,7 @@ const DataSources: FC<Props> = ({
 						<TransactionItem
 							data={transaction}
 							key={index}
-							optType="income"
+							optType={optType}
 							onClick={onDelete}
 						/>
 					))}

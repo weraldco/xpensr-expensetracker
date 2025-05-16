@@ -13,7 +13,7 @@ import { useContext, useState } from 'react';
 import toast from 'react-hot-toast';
 import { Link, useNavigate } from 'react-router';
 import AuthInput from './AuthInput';
-import ProfilePhotoSelector from './ProfilePhotoSelector';
+// import ProfilePhotoSelector from './ProfilePhotoSelector';
 
 export interface ImageT {
 	name: string;
@@ -32,7 +32,7 @@ const formSchema = z.object({
 	profileImageUrl: z.string(),
 });
 const RegistrationForm = () => {
-	const [profilePic, setProfilePic] = useState(null);
+	const [profilePic] = useState(null);
 	const [error, setError] = useState<string>('');
 
 	const { updateUser } = useContext(UserContext);
@@ -99,7 +99,7 @@ const RegistrationForm = () => {
 				<div className="flex flex-col">
 					<div className="inter-medium text-xl">Create an Account</div>
 					<div className="text-xs text-gray-500">
-						Join us today by entering your details below.
+						Join us today by signing up.
 					</div>
 					{error && <div className="text-red-400 text-sm">{error}</div>}
 				</div>
@@ -108,7 +108,7 @@ const RegistrationForm = () => {
 						onSubmit={form.handleSubmit(onSubmit)}
 						className="space-y-6 w-[400px]"
 					>
-						<ProfilePhotoSelector image={profilePic} setImage={setProfilePic} />
+						{/* <ProfilePhotoSelector image={profilePic} setImage={setProfilePic} /> */}
 
 						<AuthInput
 							name="fullName"
