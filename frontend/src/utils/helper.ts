@@ -20,7 +20,7 @@ export const formatAmount = (number: number) => {
 		number.toFixed(2).toString().split('.')[0]
 	).toLocaleString();
 
-	return `$ ${amount}.${centavos}`;
+	return `₱ ${amount}.${centavos}`;
 };
 
 export const formatDate = (date: Date) => {

@@ -27,7 +27,7 @@ const FinancialOverview: FC<Props> = ({
 			<CustomPieChart
 				data={balanceData}
 				label="Total Balace"
-				totalAmount={`$${totalBalance}`}
+				totalAmount={`₱${totalBalance}`}
 				colors={COLORS}
 				showTextAnhor
 			/>

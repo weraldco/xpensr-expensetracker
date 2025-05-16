@@ -38,7 +38,7 @@ const Last60DaysIncomeChart: FC<Props> = ({ data, totalIncome }) => {
 			<CustomPieChart
 				data={chartData}
 				label="Total Income"
-				totalAmount={`$${totalIncome}`}
+				totalAmount={`₱${totalIncome}`}
 				showTextAnhor
 				colors={COLORS}
 			/>
