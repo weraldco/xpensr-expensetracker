@@ -65,10 +65,12 @@ const Income = () => {
 						/>
 						<DataSources
 							title="Income Sources"
+							subHeading="Show all your source of income - where the income come from and the amount"
 							transactions={incomeData}
 							onDelete={(id) => {
 								setOpenDeleteAlert({ show: true, data: id });
 							}}
+							optType="income"
 							onDownload={() =>
 								downloadDataSummary(
 									API_PATHS.INCOME.DOWNLOAD_INCOME,
