@@ -62,7 +62,7 @@ const Expenses = () => {
 							btnLabel="Add Expenses"
 						/>
 						<DataSources
-							title="Expense"
+							title="Expenses"
 							subHeading="Show all your expenses, the date and where you spend your money."
 							transactions={expenseData}
 							optType="expense"
