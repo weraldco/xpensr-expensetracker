@@ -13,7 +13,7 @@ import { useContext, useState } from 'react';
 import toast from 'react-hot-toast';
 import { Link, useNavigate } from 'react-router';
 import AuthInput from './AuthInput';
-// import ProfilePhotoSelector from './ProfilePhotoSelector';
+import ProfilePhotoSelector from './ProfilePhotoSelector';
 
 export interface ImageT {
 	name: string;
@@ -32,13 +32,14 @@ const formSchema = z.object({
 	profileImageUrl: z.string(),
 });
 const RegistrationForm = () => {
-	const [profilePic] = useState(null);
+	const [profilePic, setProfilePic] = useState(null);
 	const [error, setError] = useState<string>('');
 
 	const { updateUser } = useContext(UserContext);
 
 	const navigate = useNavigate();
 	let profileImageUrl = '';
+
 	const form = useForm<z.infer<typeof formSchema>>({
 		resolver: zodResolver(formSchema),
 		defaultValues: {
@@ -62,6 +63,7 @@ const RegistrationForm = () => {
 				setError("Password didn't match!");
 				return;
 			}
+
 			const response = await axiosInstance.post(API_PATHS.AUTH.REGISTER, {
 				fullName,
 				email,
@@ -108,7 +110,7 @@ const RegistrationForm = () => {
 						onSubmit={form.handleSubmit(onSubmit)}
 						className="space-y-6 w-[400px]"
 					>
-						{/* <ProfilePhotoSelector image={profilePic} setImage={setProfilePic} /> */}
+						<ProfilePhotoSelector image={profilePic} setImage={setProfilePic} />
 
 						<AuthInput
 							name="fullName"
