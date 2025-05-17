@@ -1,5 +1,13 @@
 const User = require('../models/User');
 const jwt = require('jsonwebtoken');
+const cloudinary = require('cloudinary').v2;
+
+cloudinary.config({
+	cloud_name: 'dovviqnop',
+	api_key: process.env.CLOUDINARY_API_KEY,
+	api_secret: process.env.CLOUDINARY_API_SECRET,
+	// secure: true,
+});
 
 const generateToken = (id) => {
 	return jwt.sign({ id }, process.env.JWT_SECRET, { expiresIn: '1h' });
@@ -77,6 +85,34 @@ exports.getUserInfo = async (req, res) => {
 		}
 
 		res.status(200).json(user);
+	} catch (error) {
+		res.status(500).json({
+			message: 'Error fetching data from database',
+			error: error.message,
+		});
+	}
+};
+
+exports.testUpload = async (req, res) => {
+	try {
+		const results = await cloudinary.uploader.upload(
+			'./uploads/1743368011561-panda.png'
+		);
+		const url = cloudinary.url(results.public_id, {
+			transformation: [
+				{
+					quality: 'auto',
+					fetch_format: 'auto',
+				},
+				{
+					width: 1200,
+					height: 1200,
+					crop: 'fill',
+					gravity: 'auto',
+				},
+			],
+		});
+		res.status(200).json({ url });
 	} catch (error) {
 		res.status(500).json({
 			message: 'Error fetching data from database',
