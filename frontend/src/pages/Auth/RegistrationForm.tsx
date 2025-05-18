@@ -11,6 +11,7 @@ import axiosInstance from '@/utils/axiosInstance';
 import uploadImage from '@/utils/uploadImage';
 import { useContext, useState } from 'react';
 import toast from 'react-hot-toast';
+import { AiOutlineLoading3Quarters } from 'react-icons/ai';
 import { Link, useNavigate } from 'react-router';
 import AuthInput from './AuthInput';
 import ProfilePhotoSelector from './ProfilePhotoSelector';
@@ -34,6 +35,7 @@ const formSchema = z.object({
 const RegistrationForm = () => {
 	const [profilePic, setProfilePic] = useState(null);
 	const [error, setError] = useState<string>('');
+	const [loading, setLoading] = useState(false);
 
 	const { updateUser } = useContext(UserContext);
 
@@ -54,13 +56,17 @@ const RegistrationForm = () => {
 	const onSubmit = async (values: z.infer<typeof formSchema>) => {
 		setError('');
 		try {
+			setLoading(true);
 			if (profilePic) {
 				const imgUploadResponse = await uploadImage(profilePic);
-				profileImageUrl = imgUploadResponse.imageUrl || '';
+				if (imgUploadResponse.secure_url) {
+					profileImageUrl = imgUploadResponse.secure_url;
+				}
 			}
 			const { fullName, email, password, repeatPassword } = values;
 			if (password !== repeatPassword) {
 				setError("Password didn't match!");
+				setLoading(false);
 				return;
 			}
 
@@ -76,6 +82,7 @@ const RegistrationForm = () => {
 			if (token) {
 				localStorage.setItem('token', token);
 				updateUser(user);
+				setLoading(false);
 				navigate('/dashboard');
 			}
 		} catch (error: any) {
@@ -145,7 +152,16 @@ const RegistrationForm = () => {
 						/>
 
 						<Button className="cursor-pointer w-full bg-violet-500 hover:bg-violet-400 duration-200 active:bg-violet-600 py-6">
-							REGISTER
+							{!loading ? (
+								'REGISTER'
+							) : (
+								<div className=" px-4 py-2 flex gap-2 items-center">
+									<div className="animate-spin">
+										<AiOutlineLoading3Quarters />
+									</div>
+									<span>Processing..</span>
+								</div>
+							)}
 						</Button>
 					</form>
 				</Form>

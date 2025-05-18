@@ -1,6 +1,7 @@
 import React, { Suspense } from 'react';
 import { Navigate, Route, Routes } from 'react-router';
 import LoadingState from './components/LoadingState';
+const Test = React.lazy(() => import('./pages/Test'));
 const Home = React.lazy(() => import('./pages/Dashboard/Home'));
 const Income = React.lazy(() => import('./pages/Dashboard/Income'));
 const Expenses = React.lazy(() => import('./pages/Dashboard/Expenses'));
@@ -20,6 +21,7 @@ function App() {
 					<Route path="/dashboard" Component={Home} />
 					<Route path="/expenses" Component={Expenses} />
 					<Route path="/income" Component={Income} />
+					<Route path="/test" Component={Test} />
 				</Routes>
 			</Suspense>
 		</div>
