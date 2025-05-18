@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import imageCompression from 'browser-image-compression';
 import { useRef, useState } from 'react';
 import { LuTrash, LuUpload, LuUser } from 'react-icons/lu';
 
@@ -12,11 +13,16 @@ const ProfilePhotoSelector = ({
 	const inputRef = useRef<HTMLInputElement | null>(null);
 	const [previewUrl, setPreviewUrl] = useState<string>('');
 
-	const handleImageChange = (event: any) => {
+	const handleImageChange = async (event: any) => {
 		const file = event.target.files[0];
-		if (file) {
-			setImage(file);
-			const preview = URL.createObjectURL(file);
+		const compressedFile = await imageCompression(file, {
+			maxSizeMB: 1,
+			maxWidthOrHeight: 800,
+			useWebWorker: true,
+		});
+		if (compressedFile) {
+			setImage(compressedFile);
+			const preview = URL.createObjectURL(compressedFile);
 			setPreviewUrl(preview);
 		}
 	};
@@ -31,7 +37,6 @@ const ProfilePhotoSelector = ({
 			inputRef.current.click();
 		}
 	};
-
 	return (
 		<div className="flex justify-center mb-6">
 			<input
