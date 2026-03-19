@@ -1,20 +1,20 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import imageCompression from 'browser-image-compression';
-import { useRef, useState } from 'react';
+import { useRef, useState, type ChangeEvent, type Dispatch, type SetStateAction } from 'react';
 import { LuTrash, LuUpload, LuUser } from 'react-icons/lu';
 
 const ProfilePhotoSelector = ({
 	image,
 	setImage,
 }: {
-	image: any;
-	setImage: any;
+	image: File | null;
+	setImage: Dispatch<SetStateAction<File | null>>;
 }) => {
 	const inputRef = useRef<HTMLInputElement | null>(null);
 	const [previewUrl, setPreviewUrl] = useState<string>('');
 
-	const handleImageChange = async (event: any) => {
-		const file = event.target.files[0];
+	const handleImageChange = async (event: ChangeEvent<HTMLInputElement>) => {
+		const file = event.target.files?.[0];
+		if (!file) return;
 		const compressedFile = await imageCompression(file, {
 			maxSizeMB: 1,
 			maxWidthOrHeight: 800,

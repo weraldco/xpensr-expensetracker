@@ -4,7 +4,7 @@ import { AiOutlineLoading3Quarters } from 'react-icons/ai';
 import ProfilePhotoSelector from './Auth/ProfilePhotoSelector';
 
 const Test = () => {
-	const [profilePic, setProfilePic] = useState(null);
+	const [profilePic, setProfilePic] = useState<File | null>(null);
 	const [loading, setLoading] = useState(false);
 	const onSubmit = async () => {
 		setLoading(true);

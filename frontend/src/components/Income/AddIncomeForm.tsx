@@ -26,7 +26,17 @@ import EmojiPickerPopup from '../EmojiPickerPopup';
 
 const formSchema = z.object({
 	source: z.string().min(2).max(50),
-	amount: z.string(),
+	amount: z.preprocess(
+		(val) => {
+			if (val === '' || val === null || val === undefined) return undefined;
+			if (typeof val === 'number') return val;
+			return Number(val);
+		},
+		z
+			.number({ required_error: 'Amount is required' })
+			.finite('Amount must be a valid number')
+			.min(0, 'Amount must be at least 0')
+	),
 	date: z.date({ required_error: 'Date is required' }),
 	icon: z.string(),
 });
@@ -47,7 +57,7 @@ const AddIncomeForm: FC<Props> = ({ onAddIncome }) => {
 		resolver: zodResolver(formSchema),
 		defaultValues: {
 			source: '',
-			amount: '',
+			amount: 0,
 			date: new Date(Date.now()),
 			icon: '',
 		},

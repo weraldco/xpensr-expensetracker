@@ -79,7 +79,7 @@ export type last60DaysIncomeT = {
 export type ValuesT = {
 	source?: string;
 	category?: string;
-	amount: string;
+	amount: number;
 	date: Date;
 	icon: string;
 };

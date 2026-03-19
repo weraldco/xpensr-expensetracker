@@ -1,53 +1,80 @@
 const User = require('../models/User');
 const xlsx = require('xlsx');
 const Income = require('../models/Income');
+const { isValidObjectId } = require('mongoose');
+const { ApiError } = require('../middleware/errorMiddleware');
 
 // Add Income
-exports.addIncome = async (req, res) => {
+exports.addIncome = async (req, res, next) => {
 	const userId = req.user.id;
 	try {
 		const { icon, source, amount, date } = req.body;
-		if (!source || !amount || !date) {
-			return res.status(400).json({ message: 'All fields are required!' });
+		if (typeof source !== 'string' || !source.trim()) {
+			throw new ApiError(400, 'Source is required.');
+		}
+
+		const parsedAmount =
+			typeof amount === 'string' ? Number(amount) : (amount ?? NaN);
+		if (amount === '' || amount === null || amount === undefined) {
+			throw new ApiError(400, 'Amount is required.');
+		}
+		if (!Number.isFinite(parsedAmount)) {
+			throw new ApiError(400, 'Amount must be a valid number.');
+		}
+
+		const parsedDate = date ? new Date(date) : null;
+		if (!parsedDate || Number.isNaN(parsedDate.getTime())) {
+			throw new ApiError(400, 'Date is invalid.');
 		}
 		const newIncome = new Income({
 			userId,
 			icon,
 			source,
-			amount,
-			date: new Date(date),
+			amount: parsedAmount,
+			date: parsedDate,
 		});
 		await newIncome.save();
 		res.status(200).json({ newIncome });
 	} catch (error) {
-		res.status(500).json({ message: 'Server Error' });
+		return next(error);
 	}
 };
 
 // Get All Income
-exports.getAllIncome = async (req, res) => {
+exports.getAllIncome = async (req, res, next) => {
 	const userId = req.user.id;
 
 	try {
 		const income = await Income.find({ userId }).sort({ date: -1 });
 		res.json({ income });
 	} catch (error) {
-		res.status(500).json({ message: 'Something went wrong in the server.' });
+		return next(error);
 	}
 };
 
 // Delete Income
-exports.deleteIncome = async (req, res) => {
+exports.deleteIncome = async (req, res, next) => {
 	try {
-		await Income.findByIdAndDelete(req.params.id);
+		const userId = req.user.id;
+		const { id } = req.params;
+
+		if (!isValidObjectId(id)) {
+			throw new ApiError(400, 'Invalid income id.');
+		}
+
+		const deleted = await Income.findOneAndDelete({ _id: id, userId });
+		if (!deleted) {
+			throw new ApiError(404, 'Income not found.');
+		}
+
 		res.json({ message: 'Income deleted successfully.' });
 	} catch (error) {
-		res.status(500).json({ message: 'Something went wrong in the server.' });
+		return next(error);
 	}
 };
 
 // Download Income to Excel Format
-exports.downloadIncomeExcel = async (req, res) => {
+exports.downloadIncomeExcel = async (req, res, next) => {
 	const userId = req.user.id;
 	try {
 		const income = await Income.find({ userId }).sort({ date: -1 });
@@ -58,14 +85,25 @@ exports.downloadIncomeExcel = async (req, res) => {
 			Amount: item.amount,
 			Date: item.date,
 		}));
-
-		// Create a new excel file sheet with the data
 		const wb = xlsx.utils.book_new();
 		const ws = xlsx.utils.json_to_sheet(data);
 		xlsx.utils.book_append_sheet(wb, ws, 'Income');
-		xlsx.writeFile(wb, 'income_details.xlsx');
-		res.download('income_details.xlsx');
+
+		const buffer = xlsx.write(wb, {
+			type: 'buffer',
+			bookType: 'xlsx',
+		});
+
+		res.setHeader(
+			'Content-Disposition',
+			'attachment; filename="income_details.xlsx"'
+		);
+		res.setHeader(
+			'Content-Type',
+			'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+		);
+		return res.send(buffer);
 	} catch (error) {
-		res.status(500).json({ message: 'Server Error' });
+		return next(error);
 	}
 };

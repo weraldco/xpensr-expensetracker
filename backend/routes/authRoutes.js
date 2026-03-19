@@ -9,6 +9,7 @@ const {
 const upload = require('../middleware/uploadMiddleware');
 const cloudinary = require('cloudinary').v2;
 const streamifier = require('streamifier');
+const { rateLimit } = require('../middleware/rateLimitMiddleware');
 
 cloudinary.config({
 	cloud_name: 'dovviqnop',
@@ -19,11 +20,27 @@ cloudinary.config({
 
 const router = express.Router();
 
+const loginLimiter = rateLimit({
+	windowMs: Number(process.env.RATE_LIMIT_LOGIN_WINDOW_MS) || 60 * 1000,
+	max: Number(process.env.RATE_LIMIT_LOGIN_MAX) || 10,
+});
+
+const uploadLimiter = rateLimit({
+	windowMs: Number(process.env.RATE_LIMIT_UPLOAD_WINDOW_MS) || 10 * 60 * 1000,
+	max: Number(process.env.RATE_LIMIT_UPLOAD_MAX) || 5,
+	keyGenerator: (req) => req.user?.id || req.ip,
+});
+
 router.post('/register', registerUser);
-router.post('/login', loginUser);
+router.post('/login', loginLimiter, loginUser);
 router.get('/getUser', protect, getUserInfo);
 
-router.post('/test-upload', upload.single('image'), async (req, res) => {
+router.post(
+	'/test-upload',
+	protect,
+	uploadLimiter,
+	upload.single('image'),
+	async (req, res) => {
 	if (!req.file) {
 		return res.status(400).json({ message: 'No file to upload' });
 	}
@@ -44,8 +61,9 @@ router.post('/test-upload', upload.single('image'), async (req, res) => {
 		const result = await streamUpload(fileBuffer);
 		res.json(result);
 	} catch (err) {
-		res.status(500).json({ error: 'Upload failed', details: err });
+		res.status(500).json({ message: 'Upload failed' });
 	}
-});
+	}
+);
 
 module.exports = router;

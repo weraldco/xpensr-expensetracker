@@ -8,8 +8,8 @@ const ExpenseSchema = new mongoose.Schema(
 			required: true,
 		},
 		icon: { type: String },
-		category: { type: String, require: true }, // Example: Food, Rent, Groceries
-		amount: { type: Number, require: true },
+		category: { type: String, required: true }, // Example: Food, Rent, Groceries
+		amount: { type: Number, required: true },
 		date: { type: Date, default: Date.now },
 	},
 	{ timestamps: true }

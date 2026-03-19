@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Form } from '@/components/ui/form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
@@ -6,8 +5,6 @@ import { z } from 'zod';
 
 import { Button } from '@/components/ui/button';
 import { UserContext } from '@/context/userContext';
-import { API_PATHS } from '@/utils/apiPaths';
-import axiosInstance from '@/utils/axiosInstance';
 import uploadImage from '@/utils/uploadImage';
 import { useContext, useState } from 'react';
 import toast from 'react-hot-toast';
@@ -15,6 +12,7 @@ import { AiOutlineLoading3Quarters } from 'react-icons/ai';
 import { Link, useNavigate } from 'react-router';
 import AuthInput from './AuthInput';
 import ProfilePhotoSelector from './ProfilePhotoSelector';
+import { register } from '@/services/authService';
 
 export interface ImageT {
 	name: string;
@@ -30,10 +28,9 @@ const formSchema = z.object({
 	email: z.string().email({ message: 'Invalid email address' }),
 	password: z.string().min(4),
 	repeatPassword: z.string().min(4),
-	profileImageUrl: z.string(),
 });
 const RegistrationForm = () => {
-	const [profilePic, setProfilePic] = useState(null);
+	const [profilePic, setProfilePic] = useState<File | null>(null);
 	const [error, setError] = useState<string>('');
 	const [loading, setLoading] = useState(false);
 
@@ -49,7 +46,6 @@ const RegistrationForm = () => {
 			email: '',
 			password: '',
 			repeatPassword: '',
-			profileImageUrl: '',
 		},
 	});
 
@@ -70,14 +66,14 @@ const RegistrationForm = () => {
 				return;
 			}
 
-			const response = await axiosInstance.post(API_PATHS.AUTH.REGISTER, {
+			const response = await register({
 				fullName,
 				email,
 				password,
 				profileImageUrl,
 			});
 			toast.success(`Congratulation, you've successfully registered.`);
-			const { token, user } = response.data;
+			const { token, user } = response;
 
 			if (token) {
 				localStorage.setItem('token', token);
@@ -85,9 +81,18 @@ const RegistrationForm = () => {
 				setLoading(false);
 				navigate('/dashboard');
 			}
-		} catch (error: any) {
-			if (error.response && error.response.data.message) {
-				setError(error.response.data.message);
+		} catch (error: unknown) {
+			setLoading(false);
+			const message =
+				typeof error === 'object' &&
+				error !== null &&
+				'response' in error
+					? (error as { response?: { data?: { message?: string } } })
+							.response?.data?.message
+					: undefined;
+
+			if (typeof message === 'string') {
+				setError(message);
 			} else {
 				setError('Something went wrong. Please try again!');
 			}

@@ -7,8 +7,8 @@ import DashboardLayout from '@/components/layout/DashboardLayout';
 import LoadingState from '@/components/LoadingState';
 import Modal from '@/components/Modal';
 import { UserContext } from '@/context/userContext';
+import { getAllExpenses } from '@/services/transactionService';
 import { API_PATHS } from '@/utils/apiPaths';
-import axiosInstance from '@/utils/axiosInstance';
 import { TransactionT } from '@/utils/types';
 import { useContext, useEffect, useState } from 'react';
 
@@ -23,22 +23,20 @@ const Expenses = () => {
 		downloadDataSummary,
 	} = useContext(UserContext);
 
-	const [expenseData, setExpenseData] = useState<TransactionT[] | []>([]);
+	const [expenseData, setExpenseData] = useState<TransactionT[] | null>(null);
+	const [errorMessage, setErrorMessage] = useState<string | null>(null);
 	const [loading, setLoading] = useState(false);
 	const fetchExpenseData = async () => {
 		if (loading) return;
 
 		setLoading(true);
+		setExpenseData(null);
+		setErrorMessage(null);
 		try {
-			const response = await axiosInstance.get(
-				API_PATHS.EXPENSE.GET_ALL_EXPENSE
-			);
-
-			if (response.data) {
-				setExpenseData(response.data.expense);
-			}
+			const data = await getAllExpenses();
+			setExpenseData(data);
 		} catch (error) {
-			console.log('Error fetching data', error);
+			setErrorMessage('Failed to load expenses. Please refresh.');
 		} finally {
 			setLoading(false);
 		}
@@ -50,7 +48,20 @@ const Expenses = () => {
 	}, []);
 	return (
 		<DashboardLayout activeMenu="Expenses">
-			{expenseData ? (
+			{errorMessage ? (
+				<div className="my-10 mx-auto max-w-md p-4 bg-white rounded shadow">
+					<p className="text-red-500 text-sm">{errorMessage}</p>
+					<button
+						type="button"
+						className="mt-4 px-4 py-2 bg-violet-500 text-white rounded hover:bg-violet-400"
+						onClick={() => void fetchExpenseData()}
+					>
+						Retry
+					</button>
+				</div>
+			) : loading || expenseData === null ? (
+				<LoadingState></LoadingState>
+			) : (
 				<div className="my-5 mx-auto">
 					<div className="flex flex-col gap-4">
 						<DataOverviews
@@ -71,7 +82,7 @@ const Expenses = () => {
 							}}
 							onDownload={() =>
 								downloadDataSummary(
-									API_PATHS.INCOME.DOWNLOAD_INCOME,
+									API_PATHS.EXPENSE.DOWNLOAD_EXPENSE,
 									'expense_full_data'
 								)
 							}
@@ -108,8 +119,6 @@ const Expenses = () => {
 						/>
 					</Modal>
 				</div>
-			) : (
-				<LoadingState></LoadingState>
 			)}
 		</DashboardLayout>
 	);

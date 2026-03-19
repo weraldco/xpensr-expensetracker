@@ -9,7 +9,6 @@ interface Props {
 
 const ExpenseTransaction: FC<Props> = ({ transactions }) => {
 	const { transaction } = transactions;
-
 	return (
 		<div className="card poppins-regular">
 			<div className="flex justify-between items-center">
@@ -18,8 +17,12 @@ const ExpenseTransaction: FC<Props> = ({ transactions }) => {
 			</div>
 
 			<div>
-				{transaction.map((transaction, index) => (
-					<TransactionItem key={index} data={transaction} optType="expense" />
+				{transaction.map((txn) => (
+					<TransactionItem
+						key={txn.id ?? String(txn.date)}
+						data={txn}
+						optType="expense"
+					/>
 				))}
 			</div>
 		</div>

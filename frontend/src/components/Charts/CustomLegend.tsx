@@ -1,7 +1,6 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 interface LegendItem {
 	color: string;
-	value: any;
+	value: string | number;
 	type: string;
 	id: string;
 	name: string;

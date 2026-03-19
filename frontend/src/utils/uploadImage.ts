@@ -1,9 +1,7 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-
 import { API_PATHS } from './apiPaths';
 import axiosInstance from './axiosInstance';
 
-const uploadImage = async (imageFile: string) => {
+const uploadImage = async (imageFile: File) => {
 	try {
 		const formData = new FormData();
 		formData.append('image', imageFile);
@@ -17,7 +15,7 @@ const uploadImage = async (imageFile: string) => {
 			}
 		);
 		return response.data;
-	} catch (error: any) {
+	} catch (error) {
 		console.error(`Error uploading the image:`, error);
 		throw error;
 	}

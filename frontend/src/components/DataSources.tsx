@@ -36,10 +36,10 @@ const DataSources: FC<Props> = ({
 			{/* Content */}
 			<div className="grid grid-cols-1 md:grid-cols-2">
 				{transactions &&
-					transactions.map((transaction, index) => (
+					transactions.map((transaction) => (
 						<TransactionItem
 							data={transaction}
-							key={index}
+							key={transaction._id ?? transaction.id ?? String(transaction.date)}
 							optType={optType}
 							onClick={onDelete}
 						/>

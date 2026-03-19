@@ -1,5 +1,3 @@
-/* eslint-disable react-hooks/exhaustive-deps */
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import {
 	FormControl,
 	FormField,
@@ -8,35 +6,36 @@ import {
 	FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
-import { FC, useEffect, useState } from 'react';
+import type { Control, FieldValues, Path } from 'react-hook-form';
+import { useEffect, useState } from 'react';
 import { FaRegEye, FaRegEyeSlash } from 'react-icons/fa6';
 
-interface Props {
-	name: string;
-	formControl: any;
+interface Props<TFieldValues extends FieldValues> {
+	name: Path<TFieldValues>;
+	formControl: Control<TFieldValues>;
 	label: string;
 	placeholder: string;
 	type: string;
 	showEyeBtn?: boolean;
 }
 
-const AuthInput: FC<Props> = ({
+function AuthInput<TFieldValues extends FieldValues>({
 	name,
 	formControl,
 	label,
 	placeholder,
 	type,
 	showEyeBtn,
-}) => {
+}: Props<TFieldValues>) {
 	const [showPassword, setShowPassword] = useState(false);
 	const [inputType, setInputType] = useState('');
 	useEffect(() => {
 		setInputType(type);
-	}, []);
+	}, [type]);
 	const handleShowPassword = () => {
 		setShowPassword(!showPassword);
 
-		const inputPassword = document.getElementById(name);
+		const inputPassword = document.getElementById(String(name));
 
 		const type = inputPassword?.getAttribute('type');
 		if (type == 'text') {
@@ -85,6 +84,6 @@ const AuthInput: FC<Props> = ({
 			)}
 		/>
 	);
-};
+}
 
 export default AuthInput;

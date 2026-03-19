@@ -11,6 +11,7 @@ interface Props {
 }
 
 const TransactionItem: FC<Props> = ({ data, optType, onClick }) => {
+	const deleteId = data._id ?? data.id;
 	return (
 		<div className="group flex items-center justify-between text-[0.85em] hover:bg-gray-50 p-2 duration-200">
 			<div className="flex gap-4 items-center">
@@ -35,8 +36,9 @@ const TransactionItem: FC<Props> = ({ data, optType, onClick }) => {
 					<button
 						className="group-hover:block hidden duration-200 cursor-pointer"
 						onClick={() => {
-							onClick(data._id as string);
+							if (deleteId) onClick(deleteId);
 						}}
+						disabled={!deleteId}
 					>
 						<MdOutlineDelete
 							size={20}

@@ -8,8 +8,8 @@ const IncomeSchema = new mongoose.Schema(
 			required: true,
 		},
 		icon: { type: String },
-		source: { type: String, require: true },
-		amount: { type: Number, require: true },
+		source: { type: String, required: true },
+		amount: { type: Number, required: true },
 		date: { type: Date, default: Date.now },
 	},
 	{ timestamps: true }

@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { FC } from 'react';
 import {
 	Area,
@@ -17,23 +16,31 @@ interface Props {
 }
 
 const CustomLineChart: FC<Props> = ({ data }) => {
-	const CustomTooltip = ({ active, payload }: TooltipProps<any, any>) => {
-		if (active && payload && payload.length) {
-			return (
-				<div className="bg-white shadow-md rounded-lg p-2 border border-gray-300">
-					<p className="text-xs font-semibold text-purple-800 mb-1">
-						{payload[0].payload.category}
-					</p>
-					<p className="text-sm text-gray-600 ">
-						Amount:
-						<span className="text-sm font-medium text-gray-900">
-							${payload[0].payload.amount}
-						</span>
-					</p>
-				</div>
-			);
-		}
-		return null;
+	const CustomTooltip = ({
+		active,
+		payload,
+	}: TooltipProps<number | string, string>) => {
+		if (!active || !payload || payload.length === 0) return null;
+
+		const first = payload[0];
+		const data = first?.payload as {
+			category?: string;
+			amount?: number;
+		};
+
+		return (
+			<div className="bg-white shadow-md rounded-lg p-2 border border-gray-300">
+				<p className="text-xs font-semibold text-purple-800 mb-1">
+					{data?.category ?? ''}
+				</p>
+				<p className="text-sm text-gray-600 ">
+					Amount:
+					<span className="text-sm font-medium text-gray-900">
+						${data?.amount ?? ''}
+					</span>
+				</p>
+			</div>
+		);
 	};
 	return (
 		<div className="bg-white mt-6">

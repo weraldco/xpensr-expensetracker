@@ -17,8 +17,12 @@ const IncomeTransactions: FC<Props> = ({ transactions }) => {
 			</div>
 
 			<div>
-				{transaction.map((transaction, index) => (
-					<TransactionItem key={index} data={transaction} optType="income" />
+				{transaction.map((txn) => (
+					<TransactionItem
+						key={txn._id ?? txn.id ?? String(txn.date)}
+						data={txn}
+						optType="income"
+					/>
 				))}
 			</div>
 		</div>

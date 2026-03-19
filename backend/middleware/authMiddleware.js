@@ -1,5 +1,4 @@
 const jwt = require('jsonwebtoken');
-const user = require('../models/User');
 const User = require('../models/User');
 
 exports.protect = async (req, res, next) => {
@@ -12,9 +11,6 @@ exports.protect = async (req, res, next) => {
 		req.user = await User.findById(decode.id).select('-password');
 		next();
 	} catch (error) {
-		res.status(401).json({
-			message: 'Not authorized, invalid token!',
-			error: error.message,
-		});
+		res.status(401).json({ message: 'Not authorized, invalid token!' });
 	}
 };

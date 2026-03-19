@@ -7,8 +7,8 @@ import DashboardLayout from '@/components/layout/DashboardLayout';
 import LoadingState from '@/components/LoadingState';
 import Modal from '@/components/Modal';
 import { UserContext } from '@/context/userContext';
+import { getAllIncome } from '@/services/transactionService';
 import { API_PATHS } from '@/utils/apiPaths';
-import axiosInstance from '@/utils/axiosInstance';
 import { TransactionT } from '@/utils/types';
 import { useContext, useEffect, useState } from 'react';
 
@@ -23,7 +23,8 @@ const Income = () => {
 		downloadDataSummary,
 	} = useContext(UserContext);
 
-	const [incomeData, setIncomeData] = useState<TransactionT[] | []>([]);
+	const [incomeData, setIncomeData] = useState<TransactionT[] | null>(null);
+	const [errorMessage, setErrorMessage] = useState<string | null>(null);
 	const [loading, setLoading] = useState(false);
 
 	// Get All Income Data
@@ -31,14 +32,13 @@ const Income = () => {
 		if (loading) return;
 
 		setLoading(true);
+		setIncomeData(null);
+		setErrorMessage(null);
 		try {
-			const response = await axiosInstance.get(API_PATHS.INCOME.GET_ALL_INCOME);
-
-			if (response.data) {
-				setIncomeData(response.data.income);
-			}
+			const data = await getAllIncome();
+			setIncomeData(data);
 		} catch (error) {
-			console.log('Error fetching data', error);
+			setErrorMessage('Failed to load income. Please refresh.');
 		} finally {
 			setLoading(false);
 		}
@@ -51,7 +51,20 @@ const Income = () => {
 	}, []);
 	return (
 		<DashboardLayout activeMenu="Income">
-			{incomeData ? (
+			{errorMessage ? (
+				<div className="my-10 mx-auto max-w-md p-4 bg-white rounded shadow">
+					<p className="text-red-500 text-sm">{errorMessage}</p>
+					<button
+						type="button"
+						className="mt-4 px-4 py-2 bg-violet-500 text-white rounded hover:bg-violet-400"
+						onClick={() => void fetchIncomeData()}
+					>
+						Retry
+					</button>
+				</div>
+			) : loading || incomeData === null ? (
+				<LoadingState></LoadingState>
+			) : (
 				<div className="my-5 mx-auto">
 					<div className="flex flex-col gap-4">
 						<DataOverviews
@@ -106,8 +119,6 @@ const Income = () => {
 						/>
 					</Modal>
 				</div>
-			) : (
-				<LoadingState></LoadingState>
 			)}
 		</DashboardLayout>
 	);

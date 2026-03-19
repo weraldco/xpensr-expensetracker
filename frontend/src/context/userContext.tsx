@@ -1,8 +1,12 @@
 /* eslint-disable react-refresh/only-export-components */
-import axiosInstance from '@/utils/axiosInstance';
 import { UserContextType, UserType, ValuesT } from '@/utils/types';
 import { createContext, FC, ReactNode, useState } from 'react';
 import toast from 'react-hot-toast';
+import {
+	createTransaction,
+	deleteTransaction,
+	downloadExcel,
+} from '@/services/transactionService';
 
 interface Props {
 	children: ReactNode;
@@ -47,7 +51,7 @@ const UserProvider: FC<Props> = ({ children }) => {
 		path: string
 	) => {
 		try {
-			await axiosInstance.post(path, values);
+			await createTransaction(path, values);
 			setOpenAddModal(false);
 			toast.success('Successfull Added New Income');
 			fetchData();
@@ -58,7 +62,7 @@ const UserProvider: FC<Props> = ({ children }) => {
 
 	const handleDelete = async (fetchData: () => Promise<void>, path: string) => {
 		try {
-			await axiosInstance.delete(path);
+			await deleteTransaction(path);
 			setOpenDeleteAlert({ show: false, data: '' });
 			toast.success('Successfully Delete Income!');
 			fetchData();
@@ -69,17 +73,7 @@ const UserProvider: FC<Props> = ({ children }) => {
 
 	const downloadDataSummary = async (path: string, fileName: string) => {
 		try {
-			const response = await axiosInstance.get(path, { responseType: 'blob' });
-
-			// Creating url
-			const url = window.URL.createObjectURL(new Blob([response.data]));
-			const link = document.createElement('a');
-			link.href = url;
-			link.setAttribute('download', `${fileName}.xlsx`);
-			document.body.appendChild(link);
-			link.click();
-			link.parentNode?.removeChild(link);
-			window.URL.revokeObjectURL(url);
+			await downloadExcel(path, fileName);
 		} catch (error) {
 			console.error('Error downloading details', error);
 		}

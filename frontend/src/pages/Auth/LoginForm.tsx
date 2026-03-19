@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
@@ -15,8 +14,7 @@ import {
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { UserContext } from '@/context/userContext';
-import { API_PATHS } from '@/utils/apiPaths';
-import axiosInstance from '@/utils/axiosInstance';
+import { login } from '@/services/authService';
 import { useContext, useState } from 'react';
 import { Link, useNavigate } from 'react-router';
 
@@ -43,21 +41,25 @@ const LoginForm = () => {
 		setError('');
 		const { email, password } = values;
 		try {
-			const response = await axiosInstance.post(API_PATHS.AUTH.LOGIN, {
-				email,
-				password,
-			});
-
-			const { token, user } = response.data;
+			const response = await login({ email, password });
+			const { token, user } = response;
 
 			if (token) {
 				localStorage.setItem('token', token);
 				updateUser(user);
 				navigate('/dashboard');
 			}
-		} catch (error: any) {
-			if (error.response && error.response.data.message) {
-				setError(error.response.data.message);
+		} catch (error: unknown) {
+			const message =
+				typeof error === 'object' &&
+				error !== null &&
+				'response' in error
+					? (error as { response?: { data?: { message?: string } } })
+							.response?.data?.message
+					: undefined;
+
+			if (typeof message === 'string') {
+				setError(message);
 			} else {
 				setError('Something went wrong. Please try again!');
 			}

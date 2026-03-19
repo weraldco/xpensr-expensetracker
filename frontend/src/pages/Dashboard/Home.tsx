@@ -7,35 +7,46 @@ import RecentTransactions from '@/components/Dashboard/RecentTransactions';
 import HeadExpenseItem from '@/components/HeadExpenseItem';
 import DashboardLayout from '@/components/layout/DashboardLayout';
 import LoadingState from '@/components/LoadingState';
-import { API_PATHS } from '@/utils/apiPaths';
-import axiosInstance from '@/utils/axiosInstance';
 import { DashboardDataT } from '@/utils/types';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { IoWalletOutline } from 'react-icons/io5';
 import { LuWalletCards } from 'react-icons/lu';
 import { PiHandCoins } from 'react-icons/pi';
+import { getDashboardData as fetchDashboardDataApi } from '@/services/dashboardService';
 
 const Home = () => {
 	const [dashboardData, setDashboardData] = useState<DashboardDataT | null>(
 		null
 	);
+	const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
-	const getDashboardData = async () => {
+	const fetchDashboardData = useCallback(async () => {
 		try {
-			const response = await axiosInstance.get(API_PATHS.DASHBOARD.GET_DATA);
-
-			setDashboardData(response.data);
-		} catch (error) {
-			console.error('Failed to fetch dashboard data', error);
+			setErrorMessage(null);
+			const data = await fetchDashboardDataApi();
+			setDashboardData(data);
+		} catch {
+			setErrorMessage('Failed to load dashboard data. Please refresh.');
 		}
-	};
+	}, []);
 
 	useEffect(() => {
-		getDashboardData();
-	}, []);
+		void fetchDashboardData();
+	}, [fetchDashboardData]);
 	return (
 		<DashboardLayout activeMenu="Dashboard">
-			{dashboardData ? (
+			{errorMessage ? (
+				<div className="my-10 mx-auto max-w-md p-4 bg-white rounded shadow">
+					<p className="text-red-500 text-sm">{errorMessage}</p>
+					<button
+						type="button"
+						className="mt-4 px-4 py-2 bg-violet-500 text-white rounded hover:bg-violet-400"
+						onClick={() => void fetchDashboardData()}
+					>
+						Retry
+					</button>
+				</div>
+			) : dashboardData ? (
 				<div className="flex flex-col gap-4 pt-[20px]">
 					<div className="grid grid-cols-1 md:grid-cols-3 gap-6 w-full">
 						<HeadExpenseItem
@@ -59,7 +70,7 @@ const Home = () => {
 					</div>
 					<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
 						<RecentTransactions
-							transactions={dashboardData?.recentTransactions}
+							transactions={dashboardData.recentTransactions}
 						/>
 
 						<FinancialOverview
@@ -70,7 +81,7 @@ const Home = () => {
 					</div>
 					<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
 						<ExpenseTransaction
-							transactions={dashboardData.last30DaysExpenses}
+							transactions={dashboardData?.last30DaysExpenses}
 						/>
 						<Last30DaysExpenses
 							data={dashboardData?.last30DaysExpenses?.transaction || []}

@@ -1,7 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { UserContext } from '@/context/userContext';
-import { API_PATHS } from '@/utils/apiPaths';
-import axiosInstance from '@/utils/axiosInstance';
+import { getUserInfo } from '@/services/authService';
 import { useContext, useEffect } from 'react';
 import { useNavigate } from 'react-router';
 
@@ -16,10 +15,10 @@ export const useUserAuth = () => {
 
 		const fetchUserInfo = async () => {
 			try {
-				const response = await axiosInstance.get(API_PATHS.AUTH.GET_USER_INFO);
+				const userInfo = await getUserInfo();
 
-				if (isMounted && response.data) {
-					updateUser(response.data);
+				if (isMounted && userInfo) {
+					updateUser(userInfo);
 				}
 			} catch (error) {
 				console.error('Failed to fetch user info', error);
